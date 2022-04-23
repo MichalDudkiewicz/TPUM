@@ -2,9 +2,6 @@
 
 namespace BankAccountNS
 {
-    /// <summary>
-    /// Bank account demo class.
-    /// </summary>
     public class BankAccount
     {
         private readonly string m_customerName;

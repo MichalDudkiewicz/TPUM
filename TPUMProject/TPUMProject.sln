@@ -3,9 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.32126.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TPUMProject", "TPUMProject\TPUMProject.csproj", "{26CE1780-E27A-4857-B9B3-C11994782910}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TPUMProject", "TPUMProject\TPUMProject.csproj", "{26CE1780-E27A-4857-B9B3-C11994782910}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BankTests", "BankTests\BankTests.csproj", "{ED230804-910E-4E14-8082-AF1988E2F322}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BankTests", "BankTests\BankTests.csproj", "{ED230804-910E-4E14-8082-AF1988E2F322}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalendarData", "CalendarData\CalendarData.csproj", "{A132F69D-ED51-443F-86D5-9485EB5D314F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalendarLogic", "CalendarLogic\CalendarLogic.csproj", "{3919B98A-3353-4F97-A55E-42A29C6A41C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalendarView", "CalendarView\CalendarView.csproj", "{D09DB93F-2A36-4530-9155-1FF3DE8675AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalendarViewModel", "CalendarViewModel\CalendarViewModel.csproj", "{37B96E68-98D3-4CC0-8EEE-6B935776EBDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalendarModel", "CalendarModel\CalendarModel.csproj", "{6169FD83-7BB3-4195-A0E3-A878ED1A775F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +31,26 @@ Global
 		{ED230804-910E-4E14-8082-AF1988E2F322}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED230804-910E-4E14-8082-AF1988E2F322}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED230804-910E-4E14-8082-AF1988E2F322}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A132F69D-ED51-443F-86D5-9485EB5D314F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A132F69D-ED51-443F-86D5-9485EB5D314F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A132F69D-ED51-443F-86D5-9485EB5D314F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A132F69D-ED51-443F-86D5-9485EB5D314F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3919B98A-3353-4F97-A55E-42A29C6A41C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3919B98A-3353-4F97-A55E-42A29C6A41C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3919B98A-3353-4F97-A55E-42A29C6A41C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3919B98A-3353-4F97-A55E-42A29C6A41C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D09DB93F-2A36-4530-9155-1FF3DE8675AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D09DB93F-2A36-4530-9155-1FF3DE8675AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D09DB93F-2A36-4530-9155-1FF3DE8675AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D09DB93F-2A36-4530-9155-1FF3DE8675AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37B96E68-98D3-4CC0-8EEE-6B935776EBDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37B96E68-98D3-4CC0-8EEE-6B935776EBDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37B96E68-98D3-4CC0-8EEE-6B935776EBDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37B96E68-98D3-4CC0-8EEE-6B935776EBDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6169FD83-7BB3-4195-A0E3-A878ED1A775F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6169FD83-7BB3-4195-A0E3-A878ED1A775F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6169FD83-7BB3-4195-A0E3-A878ED1A775F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6169FD83-7BB3-4195-A0E3-A878ED1A775F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
