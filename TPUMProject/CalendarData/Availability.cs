@@ -26,9 +26,11 @@ namespace CalendarData
             get { return endTime; }
         }
 
-        public Availability(DateTime startTime, DateTime endTime)
+        public Availability(DateTime starttime, DateTime endtime)
         {
             id = Guid.NewGuid();
+            startTime = starttime;
+            endTime = endtime;
         }
 
         public void setStartTime(DateTime time)

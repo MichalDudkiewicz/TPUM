@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using CalendarData;
 using CalendarLogic;
 
 namespace CalendarModel
 {
     public class CalendarModel
     {
-        private IEmployeeAvailabilityManager _employeeAvailabilityManager;
+        public IEmployeeAvailabilityManager _employeeAvailabilityManager;
 
         public CalendarModel(IEmployeeAvailabilityManager employeeAvailabilityManager)
         {
@@ -28,7 +29,6 @@ namespace CalendarModel
         public ObservableCollection<CalendarData.Availability> ActiveEmployeeAvailabilities
         {
             get { return _employeeAvailabilityManager.ActiveEmployeeAvailabilities; }
-            set { _employeeAvailabilityManager.ActiveEmployeeAvailabilities = value; }
         }
 
         public void AddActiveEmployeeAvailability(DateTime startTime, DateTime endTime)

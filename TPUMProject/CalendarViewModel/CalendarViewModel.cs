@@ -8,7 +8,7 @@ using System.Collections.Generic;
 
 namespace CalendarViewModel
 {
-    public class ViewModel
+    public class ViewModel : INotifyPropertyChanged
     {
         private CalendarModel.CalendarModel calendarModel;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -16,11 +16,16 @@ namespace CalendarViewModel
         public ViewModel(CalendarModel.CalendarModel newCalendarModel)
         {
             calendarModel = newCalendarModel;
+            AddCommand = new Updater(o => AddButtonClick("Add"));
         }
 
-        public ViewModel()
+        private void AddButtonClick(object sender)
         {
-            //calendarModel = new CalendarModel.CalendarModel();
+            Availability av = new Availability(DateTime.Today, new DateTime(2022, 4, 27));
+            //ActiveEmployeeAvailabilities.Add(av);
+
+            calendarModel._employeeAvailabilityManager.addAvailability(DateTime.Today, new DateTime(2022, 4, 27));
+
         }
 
         private ICommand mUpdater;
@@ -29,8 +34,6 @@ namespace CalendarViewModel
         {
             get
             {
-                if (mUpdater == null)
-                    mUpdater = new Updater();
                 return mUpdater;
             }
             set
@@ -53,12 +56,16 @@ namespace CalendarViewModel
         public ObservableCollection<Availability> ActiveEmployeeAvailabilities
         {
             get { return calendarModel.ActiveEmployeeAvailabilities; }
-            set { calendarModel.ActiveEmployeeAvailabilities = value; }
         }
+
+        
     }
 
     class Updater : ICommand
     {
+        private readonly Action<object> _execute;
+        private readonly Predicate<object> _canExecute;
+
         public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter)
@@ -66,9 +73,17 @@ namespace CalendarViewModel
             return true;
         }
 
+        public Updater(Action<object> execute, Predicate<object> canExecute = null)
+        {
+            if (execute == null) throw new ArgumentNullException("execute");
+
+            _execute = execute;
+            _canExecute = canExecute;
+        }
+
         public void Execute(object parameter)
         {
-            
+            _execute(parameter ?? "<N/A>");
         }
     }
 

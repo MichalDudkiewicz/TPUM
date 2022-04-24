@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:CalendarView"
+        xmlns:local="clr-namespace:CalendarView" xmlns:calendarviewmodel="clr-namespace:CalendarViewModel;assembly=CalendarViewModel" d:DataContext="{d:DesignInstance Type=calendarviewmodel:ViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
@@ -18,7 +18,7 @@
             </Calendar.RenderTransform>
         </Calendar>
         <Grid HorizontalAlignment="Left" Height="93" Margin="0,316,0,0" VerticalAlignment="Top" Width="792">
-            <Button x:Name="Add" Command="{Binding Path=AddCommand}" Content="Add Availability" HorizontalAlignment="Left" Margin="100,10,0,0" VerticalAlignment="Top" Width="200" Height="73"/>
+            <Button x:Name="Add" Command="{Binding AddCommand}" Content="Add Availability" HorizontalAlignment="Left" Margin="100,10,0,0" VerticalAlignment="Top" Width="200" Height="73"/>
             <Button Content="Remove Availability" HorizontalAlignment="Right" Margin="0,10,100,0" VerticalAlignment="Top" Width="200" Height="73"/>
         </Grid>
         <ListBox ItemsSource="{Binding ElementName=_calendar , Path=SelectedDates}" Margin="573,192,25,125"/>

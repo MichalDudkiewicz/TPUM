@@ -21,12 +21,8 @@ namespace CalendarView
         {
             base.OnStartup(e);
             CalendarView.MainWindow main = new CalendarView.MainWindow();
-            List<Employee> employees = new List<Employee>();
-            Employee first = new Employee();
-            first.Id = 0;
-            employees.Add(first);
-            first.addAvailability(DateTime.Today, new DateTime(2022, 4, 27));
-            EmployeeRepository repository = new EmployeeRepository(employees);
+
+            EmployeeRepository repository = new EmployeeRepository();
             IEmployeeAvailabilityManager employeeAvailabilityManager = new IEmployeeAvailabilityManager(repository);
             CalendarModel.CalendarModel model = new CalendarModel.CalendarModel(employeeAvailabilityManager);
             ViewModel calendarViewModel = new ViewModel(model);

@@ -15,15 +15,16 @@ namespace CalendarLogic
         public ObservableCollection<Availability> ActiveEmployeeAvailabilities
         {
             get { return iRepository.GetById(ActiveEmployeeId).Availabilities; }
-            set
-            {
-                iRepository.GetById(ActiveEmployeeId).Availabilities = value;
-            }
         }
 
         public IEmployeeAvailabilityManager(Repository<Employee> employeeRepository)
         {
             iRepository = employeeRepository;
+        }
+
+        public IEmployeeAvailabilityManager()
+        {
+            iRepository = new EmployeeRepository();
         }
         
         public void addAvailability(DateTime startTime, DateTime endTime)
