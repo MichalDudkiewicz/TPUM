@@ -31,16 +31,9 @@ namespace CalendarLogic
             iRepository.GetById(ActiveEmployeeId).addAvailability(startTime, endTime);
         }
 
-        public void addXorAvailability(int startTime, int endTime, int groupId)
-        {
-            iRepository.GetById(ActiveEmployeeId).addXorAvailability(startTime, endTime, groupId);
-        }
-
         public void removeAvailability(Guid id)
         {
             iRepository.GetById(ActiveEmployeeId).removeAvailability(id);
         }
-
-        
     }
 }

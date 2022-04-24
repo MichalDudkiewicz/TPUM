@@ -6,17 +6,19 @@ namespace CalendarData
 {
     public class Availability
     {
-        DateTime startTime;
-        DateTime endTime;
-        Guid Id;
+        private DateTime startTime;
+        private DateTime endTime;
+        private Guid id;
 
-        //public Guid Id()
-        //{
+        
+        public Guid Id
+        {
+            get { return id; }
+        }
 
-        //}
         public Availability(DateTime startTime, DateTime endTime)
         {
-            Id = Guid.NewGuid();
+            id = Guid.NewGuid();
         }
 
         public void setStartTime(DateTime time)

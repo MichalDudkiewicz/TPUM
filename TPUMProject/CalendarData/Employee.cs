@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text;
 
 namespace CalendarData
 {
     public class Employee
     {
-        int id;
+        private int id;
         private ObservableCollection<Availability> availabilities;
-        Dictionary<int, Guid> xorAvailabilitiesGroups;
 
         public int Id { get => id; set => id = value; }
 
@@ -28,19 +28,9 @@ namespace CalendarData
             availabilities.Add(availability);
         }
 
-        public void addXorAvailability(int startTime, int endTime, int groupId)
-        {
-
-        }
-
         public void removeAvailability(Guid id)
         {
-            availabilities.
+            availabilities.Remove(availabilities.Single(a => a.Id == id));
         }
-
-        //public Availability getAvailability(Guid id)
-        //{
-            
-        //}
     }
 }
