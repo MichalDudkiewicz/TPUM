@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using CalendarData;
+using System.Runtime.CompilerServices;
 using CalendarLogic;
 
 namespace CalendarModel
@@ -9,6 +10,8 @@ namespace CalendarModel
     public class CalendarModel
     {
         public IEmployeeAvailabilityManager _employeeAvailabilityManager;
+        public event PropertyChangedEventHandler PropertyChanged;
+
 
         public CalendarModel(IEmployeeAvailabilityManager employeeAvailabilityManager)
         {
@@ -20,6 +23,16 @@ namespace CalendarModel
 
         }
 
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public bool DeadlineLockValue
+        {
+            get { return _employeeRepository.DeadlineLock; }
+            set { _employeeRepository.DeadlineLock = value; NotifyPropertyChanged(); }
+        }
         public int ActiveEmployeeId
         {
             get { return _employeeAvailabilityManager.ActiveEmployeeId;  }

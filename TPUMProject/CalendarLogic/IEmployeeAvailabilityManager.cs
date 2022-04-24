@@ -1,40 +1,43 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using CalendarData;
 
 namespace CalendarLogic
 {
     public class IEmployeeAvailabilityManager
     {
-        private Repository<Employee> iRepository;
+        public EmployeeRepository _employeeRepository;
+
         public int ActiveEmployeeId
         {
             get; set;
         }
 
+
         public ObservableCollection<Availability> ActiveEmployeeAvailabilities
         {
-            get { return iRepository.GetById(ActiveEmployeeId).Availabilities; }
+            get { return _employeeRepository.GetById(ActiveEmployeeId).Availabilities; }
         }
 
-        public IEmployeeAvailabilityManager(Repository<Employee> employeeRepository)
+        public IEmployeeAvailabilityManager(EmployeeRepository employeeRepository)
         {
-            iRepository = employeeRepository;
+            _employeeRepository = employeeRepository;
         }
 
         public IEmployeeAvailabilityManager()
         {
-            iRepository = new EmployeeRepository();
+            _employeeRepository = new EmployeeRepository();
         }
         
         public void addAvailability(DateTime startTime, DateTime endTime)
         {
-            iRepository.GetById(ActiveEmployeeId).addAvailability(startTime, endTime);
+            _employeeRepository.GetById(ActiveEmployeeId).addAvailability(startTime, endTime);
         }
 
         public void removeAvailability(Guid id)
         {
-            iRepository.GetById(ActiveEmployeeId).removeAvailability(id);
+            _employeeRepository.GetById(ActiveEmployeeId).removeAvailability(id);
         }
     }
 }
