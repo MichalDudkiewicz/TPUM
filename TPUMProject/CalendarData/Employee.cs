@@ -11,6 +11,11 @@ namespace CalendarData
         private int id;
         private ObservableCollection<Availability> availabilities;
 
+        public Employee()
+        {
+            availabilities = new ObservableCollection<Availability>();
+        }
+
         public int Id { get => id; set => id = value; }
 
         public ObservableCollection<Availability> Availabilities

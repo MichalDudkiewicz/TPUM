@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace CalendarData
 {
-    class EmployeeRepository : Repository<Employee>
+    public class EmployeeRepository : Repository<Employee>
     {
         public EmployeeRepository(List<Employee> employees)
         {

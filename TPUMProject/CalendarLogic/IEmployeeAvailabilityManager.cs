@@ -4,7 +4,7 @@ using CalendarData;
 
 namespace CalendarLogic
 {
-    public abstract class IEmployeeAvailabilityManager
+    public class IEmployeeAvailabilityManager
     {
         private Repository<Employee> iRepository;
         public int ActiveEmployeeId
@@ -21,7 +21,7 @@ namespace CalendarLogic
             }
         }
 
-        IEmployeeAvailabilityManager(Repository<Employee> employeeRepository)
+        public IEmployeeAvailabilityManager(Repository<Employee> employeeRepository)
         {
             iRepository = employeeRepository;
         }

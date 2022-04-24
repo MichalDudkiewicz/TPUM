@@ -9,7 +9,7 @@ namespace CalendarModel
     {
         private IEmployeeAvailabilityManager _employeeAvailabilityManager;
 
-        CalendarModel(IEmployeeAvailabilityManager employeeAvailabilityManager)
+        public CalendarModel(IEmployeeAvailabilityManager employeeAvailabilityManager)
         {
             _employeeAvailabilityManager = employeeAvailabilityManager;
         }

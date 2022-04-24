@@ -15,6 +15,16 @@ namespace CalendarData
         {
             get { return id; }
         }
+        
+        public DateTime StartTime
+        {
+            get { return startTime; }
+        }
+        
+        public DateTime EndTime
+        {
+            get { return endTime; }
+        }
 
         public Availability(DateTime startTime, DateTime endTime)
         {
