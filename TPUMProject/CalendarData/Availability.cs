@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace CalendarLogic
+namespace CalendarData
 {
-    class Availability
+    public class Availability
     {
         DateTime startTime;
         DateTime endTime;
@@ -14,6 +14,10 @@ namespace CalendarLogic
         //{
 
         //}
+        public Availability(DateTime startTime, DateTime endTime)
+        {
+            Id = Guid.NewGuid();
+        }
 
         public void setStartTime(DateTime time)
         {

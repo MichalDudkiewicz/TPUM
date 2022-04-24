@@ -3,9 +3,13 @@ using System.Collections.Generic;
 
 namespace CalendarData
 {
-    abstract class Repository<Employee> : IRepository<Employee>
+    public abstract class Repository<Type>
     {
-        private List<Type> entities;
-        public abstract Employee getById(int id);
+        protected Dictionary<int, Type> repositoryEntities;
+
+        public Type GetById(int id)
+        {
+            return repositoryEntities[id];
+        }
     }
 }

@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using CalendarLogic;
+using System.Linq;
 
 namespace CalendarData
 {
     class EmployeeRepository : Repository<Employee>
     {
-        public override Employee getById(int id)
+        public EmployeeRepository(List<Employee> employees)
         {
-            throw new NotImplementedException();
+            repositoryEntities = employees.ToDictionary(keySelector: e => e.Id, elementSelector: e => e);
         }
     }
 }
