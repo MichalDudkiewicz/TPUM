@@ -10,32 +10,35 @@ namespace CalendarData
     {
         private int id;
         private ObservableCollection<Availability> availabilities;
+        private readonly object mutex = new object();
 
-        public Employee()
+        public Employee(int newId)
         {
+            id = newId;
             availabilities = new ObservableCollection<Availability>();
         }
 
-        public int Id { get => id; set => id = value; }
+        public int Id { get => id; }
 
         public ObservableCollection<Availability> Availabilities
         {
-            get { return availabilities; }
-            set
-            {
-                availabilities = value;
+            get { 
+                lock (mutex)
+                {
+                    return availabilities;
+                }
             }
         }
 
         public void addAvailability(DateTime startTime, DateTime endTime)
         {
             Availability availability = new Availability(startTime, endTime);
-            availabilities.Add(availability);
+            Availabilities.Add(availability);
         }
 
         public void removeAvailability(Guid id)
         {
-            availabilities.Remove(availabilities.Single(a => a.Id == id));
+            Availabilities.Remove(availabilities.Single(a => a.Id == id));
         }
     }
 }
