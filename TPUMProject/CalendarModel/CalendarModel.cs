@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using CalendarData;
 using System.Runtime.CompilerServices;
 using CalendarLogic;
 using System.ComponentModel;
@@ -14,9 +12,10 @@ namespace CalendarModel
         public event PropertyChangedEventHandler PropertyChanged;
 
 
-        public CalendarModel(IEmployeeAvailabilityManager employeeAvailabilityManager)
+        public CalendarModel()
         {
-            _employeeAvailabilityManager = employeeAvailabilityManager;
+            _employeeAvailabilityManager = new IEmployeeAvailabilityManager();
+
         }
 
         static void Main(string[] args)

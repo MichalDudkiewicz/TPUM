@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Windows;
 using System.Windows.Input;
 using System.ComponentModel;
 using CalendarData;
 using System.Collections.ObjectModel;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
 namespace CalendarViewModel
@@ -15,18 +13,17 @@ namespace CalendarViewModel
         private DateTime currentAvailability;
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public ViewModel(CalendarModel.CalendarModel newCalendarModel)
+        public ViewModel()
         {
-            calendarModel = newCalendarModel;
+            calendarModel = new CalendarModel.CalendarModel();
+
+            ActiveEmployeeId = 0;
+
             AddCommand = new Updater(o => AddButtonClick("Add"));
         }
 
         private void AddButtonClick(object sender)
         {
-            Availability av = new Availability(DateTime.Today, new DateTime(2022, 4, 27));
-            //ActiveEmployeeAvailabilities.Add(av);
-
-            //calendarModel._employeeAvailabilityManager.addAvailability(DateTime.Today, new DateTime(2022, 4, 27));
             calendarModel._employeeAvailabilityManager.ActiveEmployeeId = ActiveEmployeeId;
             calendarModel._employeeAvailabilityManager.addAvailability(currentAvailability, currentAvailability);
         }
