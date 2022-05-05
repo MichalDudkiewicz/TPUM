@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using CalendarData;
 using System.Runtime.CompilerServices;
 using CalendarLogic;
+using System.ComponentModel;
 
 namespace CalendarModel
 {
@@ -30,8 +31,8 @@ namespace CalendarModel
 
         public bool DeadlineLockValue
         {
-            get { return _employeeRepository.DeadlineLock; }
-            set { _employeeRepository.DeadlineLock = value; NotifyPropertyChanged(); }
+            get { return _employeeAvailabilityManager._employeeRepository.DeadlineLock; }
+            set { _employeeAvailabilityManager._employeeRepository.DeadlineLock = value; NotifyPropertyChanged(); }
         }
         public int ActiveEmployeeId
         {

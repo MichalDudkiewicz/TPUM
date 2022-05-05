@@ -1,16 +1,18 @@
 ﻿using System;
+using System.Windows;
 using System.Windows.Input;
 using System.ComponentModel;
-using CalendarModel;
 using CalendarData;
 using System.Collections.ObjectModel;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace CalendarViewModel
 {
     public class ViewModel : INotifyPropertyChanged
     {
         private CalendarModel.CalendarModel calendarModel;
+        private DateTime currentAvailability;
         public event PropertyChangedEventHandler PropertyChanged;
 
         public ViewModel(CalendarModel.CalendarModel newCalendarModel)
@@ -24,8 +26,14 @@ namespace CalendarViewModel
             Availability av = new Availability(DateTime.Today, new DateTime(2022, 4, 27));
             //ActiveEmployeeAvailabilities.Add(av);
 
-            calendarModel._employeeAvailabilityManager.addAvailability(DateTime.Today, new DateTime(2022, 4, 27));
+            //calendarModel._employeeAvailabilityManager.addAvailability(DateTime.Today, new DateTime(2022, 4, 27));
+            calendarModel._employeeAvailabilityManager.ActiveEmployeeId = ActiveEmployeeId;
+            calendarModel._employeeAvailabilityManager.addAvailability(currentAvailability, currentAvailability);
+        }
 
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         private ICommand mUpdater;
@@ -58,7 +66,24 @@ namespace CalendarViewModel
             get { return calendarModel.ActiveEmployeeAvailabilities; }
         }
 
-        
+        public DateTime MarkedAvailability
+        {
+            get
+            {
+                return this.currentAvailability;
+            }
+
+            set
+            {
+                if (value != this.currentAvailability)
+                {
+                    this.currentAvailability = value;
+                    NotifyPropertyChanged();
+                }
+            }
+        }
+
+
     }
 
     class Updater : ICommand

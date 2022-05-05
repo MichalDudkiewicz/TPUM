@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using CalendarData;
 using CalendarLogic;
-using CalendarModel;
 using CalendarViewModel;
 
 namespace CalendarView
