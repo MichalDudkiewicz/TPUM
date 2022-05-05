@@ -24,8 +24,10 @@ namespace CalendarViewModel
 
         private void AddButtonClick(object sender)
         {
-            calendarModel._employeeAvailabilityManager.ActiveEmployeeId = ActiveEmployeeId;
-            calendarModel._employeeAvailabilityManager.addAvailability(currentAvailability, currentAvailability);
+            calendarModel.AddActiveEmployeeAvailability(currentAvailability, currentAvailability);
+            calendarModel.ActiveEmployeeId = ActiveEmployeeId;
+            //calendarModel._employeeAvailabilityManager.ActiveEmployeeId = ActiveEmployeeId;
+            //calendarModel._employeeAvailabilityManager.addAvailability(currentAvailability, currentAvailability);
         }
 
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
