@@ -25,9 +25,9 @@
         <ListView ItemsSource="{Binding ActiveEmployeeAvailabilities}" Margin="0,54,25,260" HorizontalAlignment="Right" Width="200">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ID" Width="20" DisplayMemberBinding="{Binding Id}" />
-                    <GridViewColumn Header="StartDate" Width="90" DisplayMemberBinding="{Binding StartTime}" />
-                    <GridViewColumn Header="EndDate" Width="90" DisplayMemberBinding="{Binding EndTime}" />
+                    <GridViewColumn Header="ID" Width="20" DisplayMemberBinding="{Binding id}" />
+                    <GridViewColumn Header="StartDate" Width="90" DisplayMemberBinding="{Binding startTime}" />
+                    <GridViewColumn Header="EndDate" Width="90" DisplayMemberBinding="{Binding endTime}" />
                 </GridView>
             </ListView.View>
         </ListView>
