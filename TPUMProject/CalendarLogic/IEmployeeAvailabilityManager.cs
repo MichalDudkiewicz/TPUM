@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
+using System.Linq;
 using CalendarData;
 
 namespace CalendarLogic
@@ -10,7 +12,7 @@ namespace CalendarLogic
     {
         public EmployeeRepository _employeeRepository;
         private ObservableCollection<Availability> availabilities;
-        private int activeEmployeeId = -1;
+        private int activeEmployeeId = 0;
 
         public ObservableCollection<Availability> Availabilities
         {
@@ -27,20 +29,32 @@ namespace CalendarLogic
                 return activeEmployeeId;
             }
             set {
-                if (activeEmployeeId != -1)
-                {
-                    _employeeRepository.GetById(activeEmployeeId).Availabilities.CollectionChanged -= onAvailabilitesChange;
-                }
+                _employeeRepository.GetById(activeEmployeeId).Availabilities.CollectionChanged -= onAvailabilitesChange;
                 activeEmployeeId = value;
                 _employeeRepository.GetById(activeEmployeeId).Availabilities.CollectionChanged += onAvailabilitesChange;
-                var employeeAvailabilities = _employeeRepository.GetById(activeEmployeeId).Availabilities;
-                availabilities = new ObservableCollection<Availability>((System.Collections.Generic.IEnumerable<Availability>)employeeAvailabilities);
+                var newAvailabilities = _employeeRepository.GetById(activeEmployeeId).Availabilities.ToList();
+                List<Availability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.Availability, Availability>(Convert));
+                availabilities = new ObservableCollection<Availability>(newLogicAvailabilities);
             }
+        }
+
+        public static Availability Convert(CalendarData.Availability a)
+        {
+            return new Availability(a);
         }
 
         private void onAvailabilitesChange(object sender, NotifyCollectionChangedEventArgs e)
         {
-            availabilities = (ObservableCollection<Availability>)e.NewItems;
+            var newAvailabilities = _employeeRepository.GetById(activeEmployeeId).Availabilities.ToList();
+            List<Availability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.Availability, Availability>(Convert));
+
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach (var item in e.NewItems)
+                {
+                    availabilities.Add(Convert((CalendarData.Availability)item));
+                }
+            }
         }
 
         public bool DeadlineLock
@@ -49,20 +63,18 @@ namespace CalendarLogic
             set { _employeeRepository.DeadlineLock = value; }
         }
 
-
-        public ObservableCollection<CalendarLogic.Availability> ActiveEmployeeAvailabilities
-        {
-            get { return Availabilities; }
-        }
-
         public IEmployeeAvailabilityManager(EmployeeRepository employeeRepository)
         {
             _employeeRepository = employeeRepository;
+            availabilities = new ObservableCollection<Availability>();
+            _employeeRepository.GetById(activeEmployeeId).Availabilities.CollectionChanged += onAvailabilitesChange;
         }
 
         public IEmployeeAvailabilityManager()
         {
             _employeeRepository = new EmployeeRepository();
+            availabilities = new ObservableCollection<Availability>();
+            _employeeRepository.GetById(activeEmployeeId).Availabilities.CollectionChanged += onAvailabilitesChange;
         }
         
         public void addAvailability(DateTime startTime, DateTime endTime)

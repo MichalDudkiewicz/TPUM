@@ -5,6 +5,8 @@ using CalendarData;
 using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
 using System.Collections.Specialized;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace CalendarViewModel
 {
@@ -26,7 +28,23 @@ namespace CalendarViewModel
 
         private void onAvailabilitesChange(object sender, NotifyCollectionChangedEventArgs e)
         {
-            _availabilites = (ObservableCollection<Availability>)e.NewItems;
+            ObservableCollection<CalendarModel.Availability> senderCollection = sender as ObservableCollection<CalendarModel.Availability>;
+            var newAvailabilities = senderCollection.ToList();
+            List<Availability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarModel.Availability, Availability>(Convert));
+            
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach (var item in e.NewItems)
+                {
+                    _availabilites.Add(Convert((CalendarModel.Availability)item));
+                    MarkedAvailability = Convert((CalendarModel.Availability)item).startTime;
+                }
+            }
+        }
+
+        public static Availability Convert(CalendarModel.Availability a)
+        {
+            return new Availability(a);
         }
 
         public ViewModel()
@@ -37,6 +55,7 @@ namespace CalendarViewModel
 
             AddCommand = new Updater(o => AddButtonClick("Add"));
 
+            _availabilites = new ObservableCollection<Availability>();
             calendarModel.ActiveEmployeeAvailabilities.CollectionChanged += onAvailabilitesChange;
         }
 

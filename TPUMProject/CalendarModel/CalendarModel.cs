@@ -4,6 +4,8 @@ using System.Runtime.CompilerServices;
 using CalendarLogic;
 using System.ComponentModel;
 using System.Collections.Specialized;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace CalendarModel
 {
@@ -23,13 +25,29 @@ namespace CalendarModel
 
         private void onAvailabilitesChange(object sender, NotifyCollectionChangedEventArgs e)
         {
-            _availabilites = (ObservableCollection<Availability>)e.NewItems;
+            ObservableCollection<CalendarLogic.Availability> senderCollection = sender as ObservableCollection<CalendarLogic.Availability>;
+            var newAvailabilities = senderCollection.ToList();
+            List<Availability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarLogic.Availability, Availability>(Convert));
+
+            if (e.Action == NotifyCollectionChangedAction.Add)
+            {
+                foreach (var item in e.NewItems)
+                {
+                    _availabilites.Add(Convert((CalendarLogic.Availability)item));
+                }
+            }
+        }
+
+        public static Availability Convert(CalendarLogic.Availability a)
+        {
+            return new Availability(a);
         }
 
         public CalendarModel()
         {
             _employeeAvailabilityManager = new IEmployeeAvailabilityManager();
-            _employeeAvailabilityManager.ActiveEmployeeAvailabilities.CollectionChanged += onAvailabilitesChange;
+            _availabilites = new ObservableCollection<Availability>();
+            _employeeAvailabilityManager.Availabilities.CollectionChanged += onAvailabilitesChange;
         }
 
         static void Main(string[] args)
@@ -50,7 +68,11 @@ namespace CalendarModel
         public int ActiveEmployeeId
         {
             get { return _employeeAvailabilityManager.ActiveEmployeeId;  }
-            set { _employeeAvailabilityManager.ActiveEmployeeId = value;  }
+            set {
+                _employeeAvailabilityManager.Availabilities.CollectionChanged -= onAvailabilitesChange;
+                _employeeAvailabilityManager.ActiveEmployeeId = value;
+                _employeeAvailabilityManager.Availabilities.CollectionChanged += onAvailabilitesChange;
+            }
         }
 
         public ObservableCollection<Availability> ActiveEmployeeAvailabilities

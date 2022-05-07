@@ -10,6 +10,13 @@ namespace CalendarModel
         public DateTime endTime { get; set; }
         public Guid id { get; set; }
 
+        public Availability(CalendarLogic.Availability availability)
+        {
+            startTime = availability.startTime;
+            endTime = availability.endTime;
+            id = availability.id;
+        }
+
         public bool Equals(Availability other)
         {
             return id == other.id;
