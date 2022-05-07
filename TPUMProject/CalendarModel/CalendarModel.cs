@@ -10,7 +10,15 @@ namespace CalendarModel
     {
         public IEmployeeAvailabilityManager _employeeAvailabilityManager;
         public event PropertyChangedEventHandler PropertyChanged;
+        private ObservableCollection<Availability> _availabilites;
 
+        public ObservableCollection<Availability> Availabilities
+        {
+            get
+            {
+                return _availabilites;
+            }
+        }
 
         public CalendarModel()
         {
@@ -30,8 +38,8 @@ namespace CalendarModel
 
         public bool DeadlineLockValue
         {
-            get { return _employeeAvailabilityManager._employeeRepository.DeadlineLock; }
-            set { _employeeAvailabilityManager._employeeRepository.DeadlineLock = value; NotifyPropertyChanged(); }
+            get { return _employeeAvailabilityManager.DeadlineLock; }
+            set { _employeeAvailabilityManager.DeadlineLock = value; NotifyPropertyChanged(); }
         }
         public int ActiveEmployeeId
         {
@@ -39,9 +47,9 @@ namespace CalendarModel
             set { _employeeAvailabilityManager.ActiveEmployeeId = value;  }
         }
 
-        public ObservableCollection<CalendarData.Availability> ActiveEmployeeAvailabilities
+        public ObservableCollection<Availability> ActiveEmployeeAvailabilities
         {
-            get { return _employeeAvailabilityManager.ActiveEmployeeAvailabilities; }
+            get { return Availabilities; }
         }
 
         public void AddActiveEmployeeAvailability(DateTime startTime, DateTime endTime)

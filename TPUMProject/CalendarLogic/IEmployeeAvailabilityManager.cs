@@ -8,16 +8,31 @@ namespace CalendarLogic
     public class IEmployeeAvailabilityManager
     {
         public EmployeeRepository _employeeRepository;
+        private ObservableCollection<Availability> availabilities;
+
+        public ObservableCollection<Availability> Availabilities
+        {
+            get
+            {
+                return availabilities;
+            }
+        }
 
         public int ActiveEmployeeId
         {
             get; set;
         }
 
-
-        public ObservableCollection<Availability> ActiveEmployeeAvailabilities
+        public bool DeadlineLock
         {
-            get { return _employeeRepository.GetById(ActiveEmployeeId).Availabilities; }
+            get { return _employeeRepository.DeadlineLock; }
+            set { _employeeRepository.DeadlineLock = value; }
+        }
+
+
+        public ObservableCollection<CalendarLogic.Availability> ActiveEmployeeAvailabilities
+        {
+            get { return Availabilities; }
         }
 
         public IEmployeeAvailabilityManager(EmployeeRepository employeeRepository)

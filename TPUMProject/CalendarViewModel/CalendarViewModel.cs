@@ -13,6 +13,16 @@ namespace CalendarViewModel
         private DateTime currentAvailability;
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private ObservableCollection<CalendarViewModel.Availability> _availabilites;
+
+        public ObservableCollection<CalendarViewModel.Availability> Availabilities
+        {
+            get
+            {
+                return _availabilites;
+            }
+        }
+
         public ViewModel()
         {
             calendarModel = new CalendarModel.CalendarModel();
@@ -60,9 +70,9 @@ namespace CalendarViewModel
             set { calendarModel.ActiveEmployeeId = value; }
         }
 
-        public ObservableCollection<Availability> ActiveEmployeeAvailabilities
+        public ObservableCollection<CalendarViewModel.Availability> ActiveEmployeeAvailabilities
         {
-            get { return calendarModel.ActiveEmployeeAvailabilities; }
+            get { return Availabilities; }
         }
 
         public DateTime MarkedAvailability
