@@ -4,6 +4,7 @@ using System.ComponentModel;
 using CalendarData;
 using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
+using System.Collections.Specialized;
 
 namespace CalendarViewModel
 {
@@ -23,6 +24,11 @@ namespace CalendarViewModel
             }
         }
 
+        private void onAvailabilitesChange(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            _availabilites = (ObservableCollection<Availability>)e.NewItems;
+        }
+
         public ViewModel()
         {
             calendarModel = new CalendarModel.CalendarModel();
@@ -30,6 +36,8 @@ namespace CalendarViewModel
             ActiveEmployeeId = 0;
 
             AddCommand = new Updater(o => AddButtonClick("Add"));
+
+            calendarModel.ActiveEmployeeAvailabilities.CollectionChanged += onAvailabilitesChange;
         }
 
         private void AddButtonClick(object sender)

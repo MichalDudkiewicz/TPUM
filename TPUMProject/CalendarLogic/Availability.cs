@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CalendarLogic
 {
-    public class Availability
+    public class Availability : IEquatable<Availability>
     {
         public DateTime startTime { get; set; }
         public DateTime endTime { get; set; }
@@ -25,6 +25,7 @@ namespace CalendarLogic
         }
 
         public static implicit operator Availability(CalendarData.Availability a) => new Availability(a.Id, a.StartTime, a.EndTime);
+        public static explicit operator CalendarData.Availability(Availability a) => new CalendarData.Availability(a.startTime, a.endTime);
 
         public bool Equals(Availability other)
         {

@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
 using CalendarLogic;
 using System.ComponentModel;
+using System.Collections.Specialized;
 
 namespace CalendarModel
 {
@@ -20,10 +21,15 @@ namespace CalendarModel
             }
         }
 
+        private void onAvailabilitesChange(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            _availabilites = (ObservableCollection<Availability>)e.NewItems;
+        }
+
         public CalendarModel()
         {
             _employeeAvailabilityManager = new IEmployeeAvailabilityManager();
-
+            _employeeAvailabilityManager.ActiveEmployeeAvailabilities.CollectionChanged += onAvailabilitesChange;
         }
 
         static void Main(string[] args)
