@@ -55,6 +55,10 @@ namespace CalendarLogic
                     availabilities.Add(Convert((CalendarData.Availability)item));
                 }
             }
+            else if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                availabilities.Clear();
+            }
         }
 
         public bool DeadlineLock

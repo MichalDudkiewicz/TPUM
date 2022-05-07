@@ -37,8 +37,11 @@ namespace CalendarViewModel
                 foreach (var item in e.NewItems)
                 {
                     _availabilites.Add(Convert((CalendarModel.Availability)item));
-                    MarkedAvailability = Convert((CalendarModel.Availability)item).startTime;
                 }
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                _availabilites.Clear();
             }
         }
 
@@ -51,18 +54,17 @@ namespace CalendarViewModel
         {
             calendarModel = new CalendarModel.CalendarModel();
 
+            _availabilites = new ObservableCollection<Availability>();
             ActiveEmployeeId = 0;
 
             AddCommand = new Updater(o => AddButtonClick("Add"));
 
-            _availabilites = new ObservableCollection<Availability>();
-            calendarModel.ActiveEmployeeAvailabilities.CollectionChanged += onAvailabilitesChange;
+
         }
 
         private void AddButtonClick(object sender)
         {
             calendarModel.AddActiveEmployeeAvailability(currentAvailability, currentAvailability);
-            calendarModel.ActiveEmployeeId = ActiveEmployeeId;
             //calendarModel._employeeAvailabilityManager.ActiveEmployeeId = ActiveEmployeeId;
             //calendarModel._employeeAvailabilityManager.addAvailability(currentAvailability, currentAvailability);
         }
@@ -94,7 +96,22 @@ namespace CalendarViewModel
         public int ActiveEmployeeId
         {
             get { return calendarModel.ActiveEmployeeId; }
-            set { calendarModel.ActiveEmployeeId = value; }
+            set {
+                Availabilities.Clear();
+                calendarModel.ActiveEmployeeAvailabilities.CollectionChanged -= onAvailabilitesChange;
+                calendarModel.ActiveEmployeeId = value;
+
+
+                List<CalendarModel.Availability> newAvailabilities = calendarModel.ActiveEmployeeAvailabilities.ToList();
+                List<Availability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarModel.Availability, Availability>(Convert));
+
+                foreach (var a in newLogicAvailabilities)
+                {
+                    _availabilites.Add(a);
+                }
+
+                calendarModel.ActiveEmployeeAvailabilities.CollectionChanged += onAvailabilitesChange;
+            }
         }
 
         public ObservableCollection<CalendarViewModel.Availability> ActiveEmployeeAvailabilities

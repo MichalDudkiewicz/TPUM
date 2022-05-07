@@ -25,16 +25,16 @@ namespace CalendarModel
 
         private void onAvailabilitesChange(object sender, NotifyCollectionChangedEventArgs e)
         {
-            ObservableCollection<CalendarLogic.Availability> senderCollection = sender as ObservableCollection<CalendarLogic.Availability>;
-            var newAvailabilities = senderCollection.ToList();
-            List<Availability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarLogic.Availability, Availability>(Convert));
-
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
                 foreach (var item in e.NewItems)
                 {
                     _availabilites.Add(Convert((CalendarLogic.Availability)item));
                 }
+            }
+            else if (e.Action == NotifyCollectionChangedAction.Reset)
+            {
+                _availabilites.Clear();
             }
         }
 
@@ -69,8 +69,13 @@ namespace CalendarModel
         {
             get { return _employeeAvailabilityManager.ActiveEmployeeId;  }
             set {
+                _employeeAvailabilityManager.Availabilities.Clear();
                 _employeeAvailabilityManager.Availabilities.CollectionChanged -= onAvailabilitesChange;
                 _employeeAvailabilityManager.ActiveEmployeeId = value;
+               
+                List<CalendarLogic.Availability> newAvailabilities = _employeeAvailabilityManager.Availabilities.ToList();
+                List<Availability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarLogic.Availability, Availability>(Convert));
+                _availabilites = new ObservableCollection<Availability>(newLogicAvailabilities);
                 _employeeAvailabilityManager.Availabilities.CollectionChanged += onAvailabilitesChange;
             }
         }
