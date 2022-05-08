@@ -6,13 +6,6 @@ namespace CalendarViewModel
 {
     public interface ICalendarViewModel
     {
-
-        public ICommand AddCommand
-        {
-            get;
-            set;
-        }
-
         public int ActiveEmployeeId
         {
             get;

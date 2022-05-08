@@ -1,5 +1,4 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using CalendarData;
 using System.Collections.Generic;
 
 namespace CalendarData.Test
