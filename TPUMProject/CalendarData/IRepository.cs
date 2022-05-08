@@ -2,7 +2,7 @@
 
 namespace CalendarData
 {
-    public abstract class Repository<Type>
+    public abstract class IRepository<Type>
     {
         protected Dictionary<int, Type> repositoryEntities;
 
@@ -10,5 +10,6 @@ namespace CalendarData
         {
             return repositoryEntities[id];
         }
+        public abstract void defaultInitialize();
     }
 }

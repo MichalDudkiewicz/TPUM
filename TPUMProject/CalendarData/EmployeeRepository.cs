@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace CalendarData
 {
-    public class EmployeeRepository : Repository<IEmployee>
+    public class EmployeeRepository : IRepository<IEmployee>
     {
         private bool deadlineLock;
         public event Action<bool> onDeadlineLockChange;
@@ -15,7 +15,7 @@ namespace CalendarData
             repositoryEntities = new Dictionary<int, IEmployee>();
         }
 
-        public void defaultInitialize()
+        public override void defaultInitialize()
         {
             IEmployee employee = new Employee(0);
             repositoryEntities.Add(0, employee);

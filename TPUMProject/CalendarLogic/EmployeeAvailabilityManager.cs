@@ -9,7 +9,7 @@ namespace CalendarLogic
 {
     public class EmployeeAvailabilityManager : IEmployeeAvailabilityManager
     {
-        public EmployeeRepository _employeeRepository;
+        public IRepository<IEmployee> _employeeRepository;
         private ObservableCollection<IAvailability> availabilities;
         private int activeEmployeeId = 0;
         OuterActionSimulation simulation;
@@ -77,7 +77,7 @@ namespace CalendarLogic
             }
         }
 
-        public EmployeeAvailabilityManager(EmployeeRepository employeeRepository)
+        public EmployeeAvailabilityManager(IRepository<IEmployee> employeeRepository)
         {
             _employeeRepository = employeeRepository;
             availabilities = new ObservableCollection<IAvailability>();

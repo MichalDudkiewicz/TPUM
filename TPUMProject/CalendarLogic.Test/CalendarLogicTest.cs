@@ -8,7 +8,7 @@ namespace CalendarLogic.Test
     [TestClass]
     public class CalendarLogicTest
     {
-        EmployeeRepository mRepository;
+        private IRepository<IEmployee> mRepository;
 
         [TestInitialize]
         public void TestInitialize()

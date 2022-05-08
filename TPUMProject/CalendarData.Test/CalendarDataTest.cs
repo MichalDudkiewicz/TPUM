@@ -7,7 +7,7 @@ namespace CalendarData.Test
     [TestClass]
     public class CalendarDataTest
     {
-        private EmployeeRepository employeeRepository;
+        private IRepository<IEmployee> employeeRepository;
 
         [TestInitialize]
         public void TestInit()
