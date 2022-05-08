@@ -13,6 +13,7 @@ namespace CalendarLogic
         public EmployeeRepository _employeeRepository;
         private ObservableCollection<Availability> availabilities;
         private int activeEmployeeId = 0;
+        OuterActionSimulation simulation;
 
         public ObservableCollection<Availability> Availabilities
         {
@@ -72,6 +73,8 @@ namespace CalendarLogic
             _employeeRepository = employeeRepository;
             availabilities = new ObservableCollection<Availability>();
             _employeeRepository.GetById(activeEmployeeId).Availabilities.CollectionChanged += onAvailabilitesChange;
+
+            simulation = new OuterActionSimulation(this, 3.0f);
         }
 
         public IEmployeeAvailabilityManager()
@@ -79,6 +82,9 @@ namespace CalendarLogic
             _employeeRepository = new EmployeeRepository();
             availabilities = new ObservableCollection<Availability>();
             _employeeRepository.GetById(activeEmployeeId).Availabilities.CollectionChanged += onAvailabilitesChange;
+
+            simulation = new OuterActionSimulation(this, 10.0f);
+            simulation.Start();
         }
         
         public void addAvailability(DateTime startTime, DateTime endTime)
