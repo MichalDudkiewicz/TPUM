@@ -13,6 +13,10 @@ namespace CalendarData
         public EmployeeRepository()
         {
             repositoryEntities = new Dictionary<int, Employee>();
+        }
+
+        public void defaultInitialize()
+        {
             Employee employee = new Employee(0);
             repositoryEntities.Add(0, employee);
 

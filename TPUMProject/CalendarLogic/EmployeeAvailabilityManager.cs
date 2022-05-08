@@ -67,6 +67,13 @@ namespace CalendarLogic
                 {
                     availabilities.Clear();
                 }
+                else if (e.Action == NotifyCollectionChangedAction.Remove)
+                {
+                    foreach (var item in e.OldItems)
+                    {
+                        availabilities.Remove(Convert((CalendarData.Availability)item));
+                    }
+                }
             }
         }
 
@@ -82,6 +89,7 @@ namespace CalendarLogic
         public EmployeeAvailabilityManager()
         {
             _employeeRepository = new EmployeeRepository();
+            _employeeRepository.defaultInitialize();
             availabilities = new ObservableCollection<IAvailability>();
             _employeeRepository.GetById(activeEmployeeId).Availabilities.CollectionChanged += onAvailabilitesChange;
 
