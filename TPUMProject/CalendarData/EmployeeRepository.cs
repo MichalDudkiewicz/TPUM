@@ -22,7 +22,12 @@ namespace CalendarData
 
         public bool DeadlineLock
         {
-            get { return deadlineLock; }
+            get {
+                lock (mutex)
+                {
+                    return deadlineLock;
+                }
+            }
             set { 
                 lock(mutex)
                 {

@@ -30,13 +30,19 @@ namespace CalendarData
 
         public void addAvailability(DateTime startTime, DateTime endTime)
         {
-            Availability availability = new Availability(startTime, endTime);
-            Availabilities.Add(availability);
+            lock (mutex)
+            {
+                Availability availability = new Availability(startTime, endTime);
+                Availabilities.Add(availability);
+            }
         }
 
         public void removeAvailability(Guid id)
         {
-            Availabilities.Remove(availabilities.Single(a => a.Id == id));
+            lock (mutex)
+            {
+                Availabilities.Remove(availabilities.Single(a => a.Id == id));
+            }
         }
     }
 }
