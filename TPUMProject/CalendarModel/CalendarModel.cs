@@ -29,7 +29,7 @@ namespace CalendarModel
             {
                 foreach (var item in e.NewItems)
                 {
-                    _availabilites.Add(Convert((CalendarLogic.Availability)item));
+                    _availabilites.Add(Convert((CalendarLogic.IAvailability)item));
                 }
             }
             else if (e.Action == NotifyCollectionChangedAction.Reset)

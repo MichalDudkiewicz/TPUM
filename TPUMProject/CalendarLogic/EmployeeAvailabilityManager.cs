@@ -25,7 +25,7 @@ namespace CalendarLogic
             this.activeEmployeeId = activeEmployeeId;
             _employeeRepository.GetById(activeEmployeeId).Availabilities.CollectionChanged += onAvailabilitesChange;
             var newAvailabilities = _employeeRepository.GetById(activeEmployeeId).Availabilities.ToList();
-            List<Availability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.Availability, Availability>(Convert));
+            List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.Availability, IAvailability>(Convert));
             availabilities = new ObservableCollection<IAvailability>(newLogicAvailabilities);
         }
 
@@ -34,7 +34,7 @@ namespace CalendarLogic
             return activeEmployeeId;
         }
 
-        public static Availability Convert(CalendarData.Availability a)
+        public static IAvailability Convert(CalendarData.Availability a)
         {
             return new Availability(a);
         }
@@ -42,7 +42,7 @@ namespace CalendarLogic
         private void onAvailabilitesChange(object sender, NotifyCollectionChangedEventArgs e)
         {
             var newAvailabilities = _employeeRepository.GetById(activeEmployeeId).Availabilities.ToList();
-            List<Availability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.Availability, Availability>(Convert));
+            List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.Availability, IAvailability>(Convert));
 
             if (e.Action == NotifyCollectionChangedAction.Add)
             {

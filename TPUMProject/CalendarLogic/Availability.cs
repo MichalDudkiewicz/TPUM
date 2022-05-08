@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CalendarLogic
 {
-    public class Availability : IAvailability
+    internal class Availability : IAvailability
     {
         public DateTime startTime { get; set; }
         public DateTime endTime { get; set; }
