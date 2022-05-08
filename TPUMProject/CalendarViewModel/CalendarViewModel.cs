@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows.Input;
 using System.ComponentModel;
-using CalendarData;
 using System.Collections.ObjectModel;
 using System.Runtime.CompilerServices;
 using System.Collections.Specialized;
