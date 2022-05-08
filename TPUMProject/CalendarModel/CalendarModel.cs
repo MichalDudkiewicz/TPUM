@@ -49,11 +49,6 @@ namespace CalendarModel
             _employeeAvailabilityManager.getAvailabilities().CollectionChanged += onAvailabilitesChange;
         }
 
-        static void Main(string[] args)
-        {
-
-        }
-
         private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

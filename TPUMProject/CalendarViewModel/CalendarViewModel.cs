@@ -99,11 +99,6 @@ namespace CalendarViewModel
             }
         }
 
-        static void Main(string[] args)
-        {
-
-        }
-
         public int ActiveEmployeeId
         {
             get { return calendarModel.getActiveEmployeeId(); }
