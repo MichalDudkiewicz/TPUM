@@ -13,12 +13,12 @@ namespace CalendarLogic.Test
         [TestInitialize]
         public void TestInitialize()
         {
-            List<Employee> employees = new List<Employee>();
+            List<IEmployee> employees = new List<IEmployee>();
 
-            Employee employee = new Employee(0);
+            IEmployee employee = new Employee(0);
             employees.Add(employee);
 
-            Employee employee2 = new Employee(1);
+            IEmployee employee2 = new Employee(1);
             employees.Add(employee2);
 
             mRepository = new EmployeeRepository(employees);

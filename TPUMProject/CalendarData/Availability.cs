@@ -2,26 +2,17 @@
 
 namespace CalendarData
 {
-    public class Availability
+    internal class Availability : IAvailability
     {
-        private DateTime startTime;
-        private DateTime endTime;
-        private Guid id;
+        public DateTime startTime { get; set; }
+        public DateTime endTime { get; set; }
+        public Guid id { get; set; }
 
-        
-        public Guid Id
+        public Availability(IAvailability availability)
         {
-            get { return id; }
-        }
-        
-        public DateTime StartTime
-        {
-            get { return startTime; }
-        }
-        
-        public DateTime EndTime
-        {
-            get { return endTime; }
+            startTime = availability.startTime();
+            endTime = availability.endTime();
+            id = availability.id();
         }
 
         public Availability(DateTime starttime, DateTime endtime)
@@ -31,14 +22,29 @@ namespace CalendarData
             endTime = endtime;
         }
 
-        public void setStartTime(DateTime time)
+        public bool Equals(Availability other)
         {
-            startTime = time;
+            return id == other.id;
         }
 
-        public void setEndTime(DateTime time)
+        DateTime IAvailability.startTime()
         {
-            endTime = time;
+            return startTime;
+        }
+
+        DateTime IAvailability.endTime()
+        {
+            return endTime;
+        }
+
+        Guid IAvailability.id()
+        {
+            return id;
+        }
+
+        public bool Equals(IAvailability other)
+        {
+            return id == other.id();
         }
 
     }

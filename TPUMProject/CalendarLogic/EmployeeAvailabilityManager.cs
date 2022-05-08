@@ -27,11 +27,11 @@ namespace CalendarLogic
         {
             lock (_dataLock)
             {
-                _employeeRepository.GetById(activeEmployeeId).Availabilities.CollectionChanged -= onAvailabilitesChange;
+                _employeeRepository.GetById(activeEmployeeId).Availabilities().CollectionChanged -= onAvailabilitesChange;
                 this.activeEmployeeId = activeEmployeeId;
-                _employeeRepository.GetById(activeEmployeeId).Availabilities.CollectionChanged += onAvailabilitesChange;
-                var newAvailabilities = _employeeRepository.GetById(activeEmployeeId).Availabilities.ToList();
-                List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.Availability, IAvailability>(Convert));
+                _employeeRepository.GetById(activeEmployeeId).Availabilities().CollectionChanged += onAvailabilitesChange;
+                var newAvailabilities = _employeeRepository.GetById(activeEmployeeId).Availabilities().ToList();
+                List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.IAvailability, IAvailability>(Convert));
                 availabilities = new ObservableCollection<IAvailability>(newLogicAvailabilities);
             }
         }
@@ -44,15 +44,15 @@ namespace CalendarLogic
             }
         }
 
-        public static IAvailability Convert(CalendarData.Availability a)
+        public static IAvailability Convert(CalendarData.IAvailability a)
         {
             return new Availability(a);
         }
 
         private void onAvailabilitesChange(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var newAvailabilities = _employeeRepository.GetById(activeEmployeeId).Availabilities.ToList();
-            List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.Availability, IAvailability>(Convert));
+            var newAvailabilities = _employeeRepository.GetById(activeEmployeeId).Availabilities().ToList();
+            List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.IAvailability, IAvailability>(Convert));
 
             lock (_dataLock)
             {
@@ -60,7 +60,7 @@ namespace CalendarLogic
                 {
                     foreach (var item in e.NewItems)
                     {
-                        availabilities.Add(Convert((CalendarData.Availability)item));
+                        availabilities.Add(Convert((CalendarData.IAvailability)item));
                     }
                 }
                 else if (e.Action == NotifyCollectionChangedAction.Reset)
@@ -71,7 +71,7 @@ namespace CalendarLogic
                 {
                     foreach (var item in e.OldItems)
                     {
-                        availabilities.Remove(Convert((CalendarData.Availability)item));
+                        availabilities.Remove(Convert((CalendarData.IAvailability)item));
                     }
                 }
             }
@@ -81,7 +81,7 @@ namespace CalendarLogic
         {
             _employeeRepository = employeeRepository;
             availabilities = new ObservableCollection<IAvailability>();
-            _employeeRepository.GetById(activeEmployeeId).Availabilities.CollectionChanged += onAvailabilitesChange;
+            _employeeRepository.GetById(activeEmployeeId).Availabilities().CollectionChanged += onAvailabilitesChange;
 
             simulation = new OuterActionSimulation(this, 3.0f);
         }
@@ -91,7 +91,7 @@ namespace CalendarLogic
             _employeeRepository = new EmployeeRepository();
             _employeeRepository.defaultInitialize();
             availabilities = new ObservableCollection<IAvailability>();
-            _employeeRepository.GetById(activeEmployeeId).Availabilities.CollectionChanged += onAvailabilitesChange;
+            _employeeRepository.GetById(activeEmployeeId).Availabilities().CollectionChanged += onAvailabilitesChange;
 
             simulation = new OuterActionSimulation(this, 10.0f);
             simulation.Start();

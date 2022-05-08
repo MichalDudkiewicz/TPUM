@@ -4,27 +4,23 @@ using System.Linq;
 
 namespace CalendarData
 {
-    public class Employee
+    public class Employee : IEmployee
     {
         private int id;
-        private ObservableCollection<Availability> availabilities;
+        private ObservableCollection<IAvailability> availabilities;
         private readonly object mutex = new object();
 
         public Employee(int newId)
         {
             id = newId;
-            availabilities = new ObservableCollection<Availability>();
+            availabilities = new ObservableCollection<IAvailability>();
         }
 
-        public int Id { get => id; }
-
-        public ObservableCollection<Availability> Availabilities
+        public ObservableCollection<IAvailability> Availabilities()
         {
-            get { 
-                lock (mutex)
-                {
-                    return availabilities;
-                }
+            lock (mutex)
+            {
+                return availabilities;
             }
         }
 
@@ -32,8 +28,8 @@ namespace CalendarData
         {
             lock (mutex)
             {
-                Availability availability = new Availability(startTime, endTime);
-                Availabilities.Add(availability);
+                IAvailability availability = new Availability(startTime, endTime);
+                Availabilities().Add(availability);
             }
         }
 
@@ -41,8 +37,13 @@ namespace CalendarData
         {
             lock (mutex)
             {
-                Availabilities.Remove(availabilities.Single(a => a.Id == id));
+                Availabilities().Remove(availabilities.Single(a => a.id() == id));
             }
+        }
+
+        public int GetId()
+        {
+            return id;
         }
     }
 }

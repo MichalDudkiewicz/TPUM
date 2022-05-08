@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace CalendarData
 {
-    public class EmployeeRepository : Repository<Employee>
+    public class EmployeeRepository : Repository<IEmployee>
     {
         private bool deadlineLock;
         public event Action<bool> onDeadlineLockChange;
@@ -12,15 +12,15 @@ namespace CalendarData
 
         public EmployeeRepository()
         {
-            repositoryEntities = new Dictionary<int, Employee>();
+            repositoryEntities = new Dictionary<int, IEmployee>();
         }
 
         public void defaultInitialize()
         {
-            Employee employee = new Employee(0);
+            IEmployee employee = new Employee(0);
             repositoryEntities.Add(0, employee);
 
-            Employee employee2 = new Employee(1);
+            IEmployee employee2 = new Employee(1);
             repositoryEntities.Add(1, employee2);
         }
 
@@ -41,10 +41,10 @@ namespace CalendarData
             }
         }
 
-        public EmployeeRepository(List<Employee> employees)
+        public EmployeeRepository(List<IEmployee> employees)
         {
             deadlineLock = false;
-            repositoryEntities = employees.ToDictionary(keySelector: e => e.Id, elementSelector: e => e);
+            repositoryEntities = employees.ToDictionary(keySelector: e => e.GetId(), elementSelector: e => e);
         }
     }
 }
