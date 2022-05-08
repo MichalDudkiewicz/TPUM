@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace CalendarViewModel
 {
-    public interface ICalendarViewModel : INotifyPropertyChanged
+    public interface ICalendarViewModel
     {
 
         public ICommand AddCommand

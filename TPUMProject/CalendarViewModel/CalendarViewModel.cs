@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace CalendarViewModel
 {
-    public class ViewModel : ICalendarViewModel
+    public class ViewModel : ICalendarViewModel, INotifyPropertyChanged
     {
         private CalendarModel.ICalendarModel calendarModel;
         private DateTime currentAvailability;
