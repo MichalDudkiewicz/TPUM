@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace CalendarLogic
 {
-    public class Availability : IEquatable<Availability>
+    public class Availability : IAvailability
     {
         public DateTime startTime { get; set; }
         public DateTime endTime { get; set; }
@@ -30,6 +31,26 @@ namespace CalendarLogic
         public bool Equals(Availability other)
         {
             return id == other.id;
+        }
+
+        DateTime IAvailability.startTime()
+        {
+            return startTime;
+        }
+
+        DateTime IAvailability.endTime()
+        {
+            return endTime;
+        }
+
+        Guid IAvailability.id()
+        {
+            return id;
+        }
+
+        public bool Equals(IAvailability other)
+        {
+            return id == other.id();
         }
     }
 }

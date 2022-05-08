@@ -38,16 +38,23 @@ namespace CalendarModel
             }
         }
 
-        public static Availability Convert(CalendarLogic.Availability a)
+        public static Availability Convert(CalendarLogic.IAvailability a)
         {
             return new Availability(a);
         }
 
+        public CalendarModel(IEmployeeAvailabilityManager manager)
+        {
+            _employeeAvailabilityManager = manager;
+            _availabilites = new ObservableCollection<Availability>();
+            _employeeAvailabilityManager.getAvailabilities().CollectionChanged += onAvailabilitesChange;
+        }
+
         public CalendarModel()
         {
-            _employeeAvailabilityManager = new IEmployeeAvailabilityManager();
+            _employeeAvailabilityManager = new EmployeeAvailabilityManager();
             _availabilites = new ObservableCollection<Availability>();
-            _employeeAvailabilityManager.Availabilities.CollectionChanged += onAvailabilitesChange;
+            _employeeAvailabilityManager.getAvailabilities().CollectionChanged += onAvailabilitesChange;
         }
 
         static void Main(string[] args)
@@ -60,23 +67,18 @@ namespace CalendarModel
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public bool DeadlineLockValue
-        {
-            get { return _employeeAvailabilityManager.DeadlineLock; }
-            set { _employeeAvailabilityManager.DeadlineLock = value; NotifyPropertyChanged(); }
-        }
         public int ActiveEmployeeId
         {
-            get { return _employeeAvailabilityManager.ActiveEmployeeId;  }
+            get { return _employeeAvailabilityManager.getActiveEmployeeId();  }
             set {
-                _employeeAvailabilityManager.Availabilities.Clear();
-                _employeeAvailabilityManager.Availabilities.CollectionChanged -= onAvailabilitesChange;
-                _employeeAvailabilityManager.ActiveEmployeeId = value;
+                _employeeAvailabilityManager.getAvailabilities().Clear();
+                _employeeAvailabilityManager.getAvailabilities().CollectionChanged -= onAvailabilitesChange;
+                _employeeAvailabilityManager.setActiveEmployeeId(value);
                
-                List<CalendarLogic.Availability> newAvailabilities = _employeeAvailabilityManager.Availabilities.ToList();
-                List<Availability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarLogic.Availability, Availability>(Convert));
+                List<CalendarLogic.IAvailability> newAvailabilities = _employeeAvailabilityManager.getAvailabilities().ToList();
+                List<Availability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarLogic.IAvailability, Availability>(Convert));
                 _availabilites = new ObservableCollection<Availability>(newLogicAvailabilities);
-                _employeeAvailabilityManager.Availabilities.CollectionChanged += onAvailabilitesChange;
+                _employeeAvailabilityManager.getAvailabilities().CollectionChanged += onAvailabilitesChange;
             }
         }
 
