@@ -12,7 +12,7 @@ namespace CalendarView
         {
             base.OnStartup(e);
             CalendarView.MainWindow main = new CalendarView.MainWindow();
-            ViewModel calendarViewModel = new ViewModel();
+            ICalendarViewModel calendarViewModel = new ViewModel();
 
             main.DataContext = calendarViewModel;
             main.Show();
