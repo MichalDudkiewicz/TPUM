@@ -10,11 +10,11 @@ namespace CalendarViewModel
         public DateTime endTime { get; set; }
         public Guid id { get; set; }
 
-        public Availability(CalendarModel.Availability availability)
+        public Availability(CalendarModel.IAvailability availability)
         {
-            startTime = availability.startTime;
-            endTime = availability.endTime;
-            id = availability.id;
+            startTime = availability.startTime();
+            endTime = availability.endTime();
+            id = availability.id();
         }
 
         public Availability(Guid _id, DateTime _startTime, DateTime _endTime)
@@ -23,8 +23,6 @@ namespace CalendarViewModel
             endTime = _endTime;
             id = _id;
         }
-
-        public static implicit operator Availability(CalendarModel.Availability a) => new Availability(a.id, a.startTime, a.endTime);
 
         public bool Equals(Availability other)
         {

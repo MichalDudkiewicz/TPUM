@@ -4,7 +4,7 @@ using System.Text;
 
 namespace CalendarModel
 {
-    public class Availability : IEquatable<Availability>
+    internal class Availability : IAvailability
     {
         public DateTime startTime { get; set; }
         public DateTime endTime { get; set; }
@@ -20,6 +20,26 @@ namespace CalendarModel
         public bool Equals(Availability other)
         {
             return id == other.id;
+        }
+
+        DateTime IAvailability.startTime()
+        {
+            return startTime;
+        }
+
+        DateTime IAvailability.endTime()
+        {
+            return endTime;
+        }
+
+        Guid IAvailability.id()
+        {
+            return id;
+        }
+
+        public bool Equals(IAvailability other)
+        {
+            return id == other.id();
         }
     }
 }

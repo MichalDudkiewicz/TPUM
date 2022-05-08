@@ -13,6 +13,6 @@ namespace CalendarLogic
 
         public void removeAvailability(Guid id);
 
-        ObservableCollection<IAvailability> getAvailabilities();
+        public ObservableCollection<IAvailability> getAvailabilities();
     }
 }

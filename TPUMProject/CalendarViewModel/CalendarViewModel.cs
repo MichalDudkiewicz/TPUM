@@ -12,7 +12,7 @@ namespace CalendarViewModel
 {
     public class ViewModel : INotifyPropertyChanged
     {
-        private CalendarModel.CalendarModel calendarModel;
+        private CalendarModel.ICalendarModel calendarModel;
         private DateTime currentAvailability;
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -28,15 +28,15 @@ namespace CalendarViewModel
 
         private void onAvailabilitesChange(object sender, NotifyCollectionChangedEventArgs e)
         {
-            ObservableCollection<CalendarModel.Availability> senderCollection = sender as ObservableCollection<CalendarModel.Availability>;
+            ObservableCollection<CalendarModel.IAvailability> senderCollection = sender as ObservableCollection<CalendarModel.IAvailability>;
             var newAvailabilities = senderCollection.ToList();
-            List<Availability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarModel.Availability, Availability>(Convert));
+            List<Availability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarModel.IAvailability, Availability>(Convert));
             
             if (e.Action == NotifyCollectionChangedAction.Add)
             {
                 foreach (var item in e.NewItems)
                 {
-                    _availabilites.Add(Convert((CalendarModel.Availability)item));
+                    _availabilites.Add(Convert((CalendarModel.IAvailability)item));
                 }
             }
             else if (e.Action == NotifyCollectionChangedAction.Reset)
@@ -45,7 +45,7 @@ namespace CalendarViewModel
             }
         }
 
-        public static Availability Convert(CalendarModel.Availability a)
+        public static Availability Convert(CalendarModel.IAvailability a)
         {
             return new Availability(a);
         }
@@ -53,6 +53,18 @@ namespace CalendarViewModel
         public ViewModel()
         {
             calendarModel = new CalendarModel.CalendarModel();
+
+            _availabilites = new ObservableCollection<Availability>();
+            ActiveEmployeeId = 0;
+
+            AddCommand = new Updater(o => AddButtonClick("Add"));
+
+
+        }
+
+        public ViewModel(CalendarModel.ICalendarModel model)
+        {
+            calendarModel = model;
 
             _availabilites = new ObservableCollection<Availability>();
             ActiveEmployeeId = 0;
@@ -95,22 +107,22 @@ namespace CalendarViewModel
 
         public int ActiveEmployeeId
         {
-            get { return calendarModel.ActiveEmployeeId; }
+            get { return calendarModel.getActiveEmployeeId(); }
             set {
                 Availabilities.Clear();
-                calendarModel.ActiveEmployeeAvailabilities.CollectionChanged -= onAvailabilitesChange;
-                calendarModel.ActiveEmployeeId = value;
+                calendarModel.availabilities().CollectionChanged -= onAvailabilitesChange;
+                calendarModel.setActiveEmployeeId(value);
 
 
-                List<CalendarModel.Availability> newAvailabilities = calendarModel.ActiveEmployeeAvailabilities.ToList();
-                List<Availability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarModel.Availability, Availability>(Convert));
+                List<CalendarModel.IAvailability> newAvailabilities = calendarModel.availabilities().ToList();
+                List<Availability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarModel.IAvailability, Availability>(Convert));
 
                 foreach (var a in newLogicAvailabilities)
                 {
                     _availabilites.Add(a);
                 }
 
-                calendarModel.ActiveEmployeeAvailabilities.CollectionChanged += onAvailabilitesChange;
+                calendarModel.availabilities().CollectionChanged += onAvailabilitesChange;
             }
         }
 

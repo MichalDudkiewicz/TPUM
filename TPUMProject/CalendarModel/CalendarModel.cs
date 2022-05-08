@@ -9,19 +9,11 @@ using System.Collections.Generic;
 
 namespace CalendarModel
 {
-    public class CalendarModel
+    public class CalendarModel : ICalendarModel
     {
         public IEmployeeAvailabilityManager _employeeAvailabilityManager;
         public event PropertyChangedEventHandler PropertyChanged;
-        private ObservableCollection<Availability> _availabilites;
-
-        public ObservableCollection<Availability> Availabilities
-        {
-            get
-            {
-                return _availabilites;
-            }
-        }
+        private ObservableCollection<IAvailability> _availabilites;
 
         private void onAvailabilitesChange(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -38,7 +30,7 @@ namespace CalendarModel
             }
         }
 
-        public static Availability Convert(CalendarLogic.IAvailability a)
+        public static IAvailability Convert(CalendarLogic.IAvailability a)
         {
             return new Availability(a);
         }
@@ -46,14 +38,14 @@ namespace CalendarModel
         public CalendarModel(IEmployeeAvailabilityManager manager)
         {
             _employeeAvailabilityManager = manager;
-            _availabilites = new ObservableCollection<Availability>();
+            _availabilites = new ObservableCollection<IAvailability>();
             _employeeAvailabilityManager.getAvailabilities().CollectionChanged += onAvailabilitesChange;
         }
 
         public CalendarModel()
         {
             _employeeAvailabilityManager = new EmployeeAvailabilityManager();
-            _availabilites = new ObservableCollection<Availability>();
+            _availabilites = new ObservableCollection<IAvailability>();
             _employeeAvailabilityManager.getAvailabilities().CollectionChanged += onAvailabilitesChange;
         }
 
@@ -76,15 +68,10 @@ namespace CalendarModel
                 _employeeAvailabilityManager.setActiveEmployeeId(value);
                
                 List<CalendarLogic.IAvailability> newAvailabilities = _employeeAvailabilityManager.getAvailabilities().ToList();
-                List<Availability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarLogic.IAvailability, Availability>(Convert));
-                _availabilites = new ObservableCollection<Availability>(newLogicAvailabilities);
+                List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarLogic.IAvailability, IAvailability>(Convert));
+                _availabilites = new ObservableCollection<IAvailability>(newLogicAvailabilities);
                 _employeeAvailabilityManager.getAvailabilities().CollectionChanged += onAvailabilitesChange;
             }
-        }
-
-        public ObservableCollection<Availability> ActiveEmployeeAvailabilities
-        {
-            get { return Availabilities; }
         }
 
         public void AddActiveEmployeeAvailability(DateTime startTime, DateTime endTime)
@@ -95,6 +82,21 @@ namespace CalendarModel
         public void RemoveActiveEmployeeAvailability(Guid id)
         {
             _employeeAvailabilityManager.removeAvailability(id);
+        }
+
+        public ObservableCollection<IAvailability> availabilities()
+        {
+            return _availabilites;
+        }
+
+        public void setActiveEmployeeId(int id)
+        {
+            ActiveEmployeeId = id;
+        }
+
+        public int getActiveEmployeeId()
+        {
+            return ActiveEmployeeId;
         }
     }
 }
