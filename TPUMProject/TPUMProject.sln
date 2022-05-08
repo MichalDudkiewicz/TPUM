@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.32126.315
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32319.34
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalendarData", "CalendarData\CalendarData.csproj", "{A132F69D-ED51-443F-86D5-9485EB5D314F}"
 EndProject
@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalendarViewModel", "Calend
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalendarModel", "CalendarModel\CalendarModel.csproj", "{6169FD83-7BB3-4195-A0E3-A878ED1A775F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalendarView", "CalendarView\CalendarView.csproj", "{3D1E5890-9F7A-4630-939A-F6659386B6F5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalendarView", "CalendarView\CalendarView.csproj", "{3D1E5890-9F7A-4630-939A-F6659386B6F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalendarData.Test", "CalendarData.Test\CalendarData.Test.csproj", "{861039C8-CF42-4F2F-BCA8-43F5CE0C1D0D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{3D1E5890-9F7A-4630-939A-F6659386B6F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D1E5890-9F7A-4630-939A-F6659386B6F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3D1E5890-9F7A-4630-939A-F6659386B6F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{861039C8-CF42-4F2F-BCA8-43F5CE0C1D0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{861039C8-CF42-4F2F-BCA8-43F5CE0C1D0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{861039C8-CF42-4F2F-BCA8-43F5CE0C1D0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{861039C8-CF42-4F2F-BCA8-43F5CE0C1D0D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
