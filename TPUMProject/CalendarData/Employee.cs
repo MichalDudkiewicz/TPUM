@@ -2,9 +2,15 @@
 using System.Collections.ObjectModel;
 using System.Linq;
 
+#if (DEBUG)
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("CalendarData.Test"), InternalsVisibleTo("CalendarLogic.Test")]
+#endif
+
 namespace CalendarData
 {
-    public class Employee : IEmployee
+    internal class Employee : IEmployee
     {
         private int id;
         private ObservableCollection<IAvailability> availabilities;

@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalendarView", "CalendarVie
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalendarData.Test", "CalendarData.Test\CalendarData.Test.csproj", "{861039C8-CF42-4F2F-BCA8-43F5CE0C1D0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalendarLogic.Test", "CalendarLogic.Test\CalendarLogic.Test.csproj", "{2CE9BD1B-2C43-4841-A984-D613376FCC2A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalendarLogic.Test", "CalendarLogic.Test\CalendarLogic.Test.csproj", "{2CE9BD1B-2C43-4841-A984-D613376FCC2A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,11 +46,9 @@ Global
 		{861039C8-CF42-4F2F-BCA8-43F5CE0C1D0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{861039C8-CF42-4F2F-BCA8-43F5CE0C1D0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{861039C8-CF42-4F2F-BCA8-43F5CE0C1D0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{861039C8-CF42-4F2F-BCA8-43F5CE0C1D0D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2CE9BD1B-2C43-4841-A984-D613376FCC2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2CE9BD1B-2C43-4841-A984-D613376FCC2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2CE9BD1B-2C43-4841-A984-D613376FCC2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2CE9BD1B-2C43-4841-A984-D613376FCC2A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
