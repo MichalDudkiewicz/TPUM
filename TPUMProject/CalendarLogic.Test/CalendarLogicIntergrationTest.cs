@@ -1,4 +1,6 @@
 ﻿using CalendarData;
+using CalendarViewModelServer;
+using CalendarViewServer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -9,6 +11,8 @@ namespace CalendarLogic.Test
     [TestClass]
     public class CalendarLogicIntergrationTest
     {
+        static CalendarViewServer.WebSocketConnection _wserver = null;
+
         private IRepository<IEmployee> mRepository;
         private Task val = null;
 
@@ -17,9 +21,38 @@ namespace CalendarLogic.Test
             await mRepository.connect();
         }
 
+        private async static void updateClientAvailabilities(object sender, string e)
+        {
+            if (_wserver != null)
+            {
+                Console.WriteLine("------------");
+                Console.WriteLine("[SENT]:");
+                Console.WriteLine(e);
+                Console.WriteLine("------------");
+                await _wserver.SendAsync(e);
+            }
+        }
+
         [TestInitialize]
         public void TestInitialize()
         {
+            Uri uri = new Uri("ws://localhost:6966");
+            ICalendarViewModel dataContext = new ViewModel();
+            Task server = Task.Run(async () => await WebSocketServer.Server(uri.Port,
+                _ws =>
+                {
+                    _wserver = _ws; _wserver.onMessage = (data) =>
+                    {
+                        Console.WriteLine("------------");
+                        Console.WriteLine("[RECEIVED]:");
+                        Console.WriteLine(data.ToString());
+                        Console.WriteLine("------------");
+                        dataContext.receiveData(data);
+                    };
+                }));
+
+            dataContext.SendData += updateClientAvailabilities;
+
             List<IEmployee> employees = new List<IEmployee>();
 
             IEmployee employee = new Employee(0);
@@ -55,7 +88,7 @@ namespace CalendarLogic.Test
             }
             Assert.IsTrue(contains);
 
-
+            await _wserver?.DisconnectAsync();
         }
 
         [TestMethod]
@@ -76,6 +109,8 @@ namespace CalendarLogic.Test
 
             availabilitites = employeeAvailabilityManager.getAvailabilities();
             Assert.AreEqual(0, availabilitites.Count);
+
+            await _wserver?.DisconnectAsync();
         }
     }
 }
