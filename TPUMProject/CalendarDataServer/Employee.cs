@@ -5,7 +5,7 @@ using System.Linq;
 #if (DEBUG)
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("CalendarData.Test"), InternalsVisibleTo("CalendarLogic.Test")]
+[assembly: InternalsVisibleTo("CalendarDataServer.Test"), InternalsVisibleTo("CalendarLogicServer.Test")]
 #endif
 
 namespace CalendarDataServer
