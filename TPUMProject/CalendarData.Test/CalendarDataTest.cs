@@ -20,6 +20,7 @@ namespace CalendarData.Test
             employees.Add(employee2);
 
             employeeRepository = new EmployeeRepository(employees);
+
         }
 
         [TestMethod]

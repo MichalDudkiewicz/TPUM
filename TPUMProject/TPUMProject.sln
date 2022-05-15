@@ -27,9 +27,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalendarViewModelServer", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalendarModelServer", "CalendarModelServer\CalendarModelServer.csproj", "{961299FB-E9E5-429E-B207-89FC111934E4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalendarDataServer.Test", "CalendarDataServer.Test\CalendarDataServer.Test.csproj", "{B7BB6347-9BEF-4BD0-BD5A-51DD27185526}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalendarDataServer.Test", "CalendarDataServer.Test\CalendarDataServer.Test.csproj", "{B7BB6347-9BEF-4BD0-BD5A-51DD27185526}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CalendarLogicServer.Test", "CalendarLogicServer.Test\CalendarLogicServer.Test.csproj", "{101ABE8C-BD2F-45EE-90EE-9A7A2F90F0E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CalendarLogicServer.Test", "CalendarLogicServer.Test\CalendarLogicServer.Test.csproj", "{101ABE8C-BD2F-45EE-90EE-9A7A2F90F0E1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{8C6D2034-2ABF-4653-B966-8946A701DBE0}"
 EndProject

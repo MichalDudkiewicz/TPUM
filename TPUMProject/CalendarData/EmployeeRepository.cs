@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 
 namespace CalendarData
@@ -18,7 +19,7 @@ namespace CalendarData
             repositoryEntities = new Dictionary<int, IEmployee>();
         }
 
-        public override void defaultInitialize()
+        public override async void defaultInitialize()
         {
             IEmployee employee = new Employee(0);
             repositoryEntities.Add(0, employee);
@@ -26,18 +27,7 @@ namespace CalendarData
             IEmployee employee2 = new Employee(1);
             repositoryEntities.Add(1, employee2);
 
-            connect();
-        }
-
-        private async void connect()
-        {
-            Uri uri = new Uri("ws://localhost:6966");
-            _wclient = await WebSocketClient.Connect(uri, message => Console.WriteLine(message));
-
-            _wclient.onMessage = (data) =>
-            {
-                parseAndStore($"{data}");
-            };
+            await connect();
         }
 
         private void parseAndStore(string message)
@@ -70,6 +60,22 @@ namespace CalendarData
         private async void send(string message)
         {
             await _wclient.SendAsync(message);
+        }
+
+        public override async Task connect()
+        {
+            Uri uri = new Uri("ws://localhost:6966");
+            _wclient = await WebSocketClient.Connect(uri, message => Console.WriteLine(message));
+
+            _wclient.onMessage = (data) =>
+            {
+                parseAndStore($"{data}");
+            };
+        }
+
+        public override async Task disconnect()
+        {
+            
         }
 
         public bool DeadlineLock

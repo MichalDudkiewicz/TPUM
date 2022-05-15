@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System;
+using System.Threading.Tasks;
 
 namespace CalendarData
 {
@@ -14,5 +15,9 @@ namespace CalendarData
         public abstract void defaultInitialize();
 
         public abstract void AddAvailability(int employeeId, DateTime startTime, DateTime endTime);
+
+        public abstract Task connect();
+
+        public abstract Task disconnect();
     }
 }

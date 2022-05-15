@@ -2,7 +2,7 @@
 
 namespace CalendarData
 {
-    internal class Availability : IAvailability
+    public class Availability : IAvailability
     {
         public DateTime startTime { get; set; }
         public DateTime endTime { get; set; }
