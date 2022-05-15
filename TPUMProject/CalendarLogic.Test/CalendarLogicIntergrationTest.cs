@@ -1,6 +1,4 @@
 ﻿using CalendarData;
-using CalendarViewModelServer;
-using CalendarViewServer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
