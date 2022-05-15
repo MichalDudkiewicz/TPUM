@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
-using System.Windows.Data;
-using CalendarData;
+using CalendarDataServer;
 
-namespace CalendarLogic
+namespace CalendarLogicServer
 {
     public class EmployeeAvailabilityManager : IEmployeeAvailabilityManager
     {
         public IRepository<IEmployee> _employeeRepository;
         private ObservableCollection<IAvailability> availabilities;
         private int activeEmployeeId = 0;
+        OuterActionSimulation simulation;
         private readonly object _dataLock = new object();
 
         public ObservableCollection<IAvailability> getAvailabilities()
@@ -31,7 +31,7 @@ namespace CalendarLogic
                 this.activeEmployeeId = activeEmployeeId;
                 _employeeRepository.GetById(activeEmployeeId).Availabilities().CollectionChanged += onAvailabilitesChange;
                 var newAvailabilities = _employeeRepository.GetById(activeEmployeeId).Availabilities().ToList();
-                List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.IAvailability, IAvailability>(Convert));
+                List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarDataServer.IAvailability, IAvailability>(Convert));
                 availabilities = new ObservableCollection<IAvailability>(newLogicAvailabilities);
             }
         }
@@ -44,7 +44,7 @@ namespace CalendarLogic
             }
         }
 
-        public static IAvailability Convert(CalendarData.IAvailability a)
+        public static IAvailability Convert(CalendarDataServer.IAvailability a)
         {
             return new Availability(a);
         }
@@ -52,7 +52,7 @@ namespace CalendarLogic
         private void onAvailabilitesChange(object sender, NotifyCollectionChangedEventArgs e)
         {
             var newAvailabilities = _employeeRepository.GetById(activeEmployeeId).Availabilities().ToList();
-            List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.IAvailability, IAvailability>(Convert));
+            List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarDataServer.IAvailability, IAvailability>(Convert));
 
             lock (_dataLock)
             {
@@ -60,7 +60,7 @@ namespace CalendarLogic
                 {
                     foreach (var item in e.NewItems)
                     {
-                        availabilities.Add(Convert((CalendarData.IAvailability)item));
+                        availabilities.Add(Convert((CalendarDataServer.IAvailability)item));
                     }
                 }
                 else if (e.Action == NotifyCollectionChangedAction.Reset)
@@ -71,7 +71,7 @@ namespace CalendarLogic
                 {
                     foreach (var item in e.OldItems)
                     {
-                        availabilities.Remove(Convert((CalendarData.IAvailability)item));
+                        availabilities.Remove(Convert((CalendarDataServer.IAvailability)item));
                     }
                 }
             }
@@ -83,24 +83,26 @@ namespace CalendarLogic
             availabilities = new ObservableCollection<IAvailability>();
             _employeeRepository.GetById(activeEmployeeId).Availabilities().CollectionChanged += onAvailabilitesChange;
 
-            BindingOperations.EnableCollectionSynchronization(availabilities, _dataLock);
+            simulation = new OuterActionSimulation(this, 3.0f);
         }
 
         public EmployeeAvailabilityManager()
         {
             _employeeRepository = new EmployeeRepository();
             _employeeRepository.defaultInitialize();
+
             availabilities = new ObservableCollection<IAvailability>();
             _employeeRepository.GetById(activeEmployeeId).Availabilities().CollectionChanged += onAvailabilitesChange;
 
-            BindingOperations.EnableCollectionSynchronization(availabilities, _dataLock);
+            simulation = new OuterActionSimulation(this, 10.0f);
+            simulation.Start();
         }
 
         public void addAvailability(DateTime startTime, DateTime endTime)
         {
             lock (_dataLock)
             {
-                _employeeRepository.AddAvailability(activeEmployeeId,startTime, endTime);
+                _employeeRepository.GetById(activeEmployeeId).addAvailability(startTime, endTime);
             }
         }
 

@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using System;
 
-namespace CalendarData
+namespace CalendarDataServer
 {
     public abstract class IRepository<Type>
     {
@@ -12,7 +11,5 @@ namespace CalendarData
             return repositoryEntities[id];
         }
         public abstract void defaultInitialize();
-
-        public abstract void AddAvailability(int employeeId, DateTime startTime, DateTime endTime);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace CalendarData
+namespace CalendarDataServer
 {
-    public class Availability : IAvailability
+    internal class Availability : IAvailability
     {
         public DateTime startTime { get; set; }
         public DateTime endTime { get; set; }
@@ -13,13 +13,6 @@ namespace CalendarData
             startTime = availability.startTime();
             endTime = availability.endTime();
             id = availability.id();
-        }
-
-        public Availability()
-        {
-            startTime = DateTime.MinValue;
-            endTime = DateTime.MaxValue;
-            id = Guid.Empty;
         }
 
         public Availability(DateTime starttime, DateTime endtime)

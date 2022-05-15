@@ -1,33 +1,29 @@
 ﻿using System;
 
-namespace CalendarData
+namespace CalendarLogicServer
 {
-    public class Availability : IAvailability
+    internal class Availability : IAvailability
     {
         public DateTime startTime { get; set; }
         public DateTime endTime { get; set; }
         public Guid id { get; set; }
 
-        public Availability(IAvailability availability)
+        public Availability(CalendarDataServer.IAvailability availability)
         {
             startTime = availability.startTime();
             endTime = availability.endTime();
             id = availability.id();
         }
 
-        public Availability()
+        public Availability(Guid _id, DateTime _startTime, DateTime _endTime)
         {
-            startTime = DateTime.MinValue;
-            endTime = DateTime.MaxValue;
-            id = Guid.Empty;
+            startTime = _startTime;
+            endTime = _endTime;
+            id = _id;
         }
 
-        public Availability(DateTime starttime, DateTime endtime)
-        {
-            id = Guid.NewGuid();
-            startTime = starttime;
-            endTime = endtime;
-        }
+        //public static implicit operator Availability(CalendarData.Availability a) => new Availability(a.Id, a.StartTime, a.EndTime);
+        //public static explicit operator CalendarData.Availability(Availability a) => new CalendarData.Availability(a.startTime, a.endTime);
 
         public bool Equals(Availability other)
         {
@@ -53,6 +49,5 @@ namespace CalendarData
         {
             return id == other.id();
         }
-
     }
 }

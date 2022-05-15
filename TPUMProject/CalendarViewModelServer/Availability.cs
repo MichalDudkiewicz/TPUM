@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CalendarData
+namespace CalendarViewModelServer
 {
     public class Availability : IAvailability
     {
@@ -8,30 +8,30 @@ namespace CalendarData
         public DateTime endTime { get; set; }
         public Guid id { get; set; }
 
-        public Availability(IAvailability availability)
+        public Availability(CalendarModelServer.IAvailability availability)
         {
             startTime = availability.startTime();
             endTime = availability.endTime();
             id = availability.id();
         }
 
+        public Availability(Guid _id, DateTime _startTime, DateTime _endTime)
+        {
+            startTime = _startTime;
+            endTime = _endTime;
+            id = _id;
+        }
+
         public Availability()
         {
-            startTime = DateTime.MinValue;
-            endTime = DateTime.MaxValue;
+            startTime = new DateTime();
+            endTime = new DateTime();
             id = Guid.Empty;
         }
 
-        public Availability(DateTime starttime, DateTime endtime)
+        public bool Equals(IAvailability other)
         {
-            id = Guid.NewGuid();
-            startTime = starttime;
-            endTime = endtime;
-        }
-
-        public bool Equals(Availability other)
-        {
-            return id == other.id;
+            return id == other.id();
         }
 
         DateTime IAvailability.startTime()
@@ -48,11 +48,5 @@ namespace CalendarData
         {
             return id;
         }
-
-        public bool Equals(IAvailability other)
-        {
-            return id == other.id();
-        }
-
     }
 }

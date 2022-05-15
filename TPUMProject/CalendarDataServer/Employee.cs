@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Windows.Data;
 
 #if (DEBUG)
 using System.Runtime.CompilerServices;
@@ -9,21 +8,18 @@ using System.Runtime.CompilerServices;
 [assembly: InternalsVisibleTo("CalendarData.Test"), InternalsVisibleTo("CalendarLogic.Test")]
 #endif
 
-namespace CalendarData
+namespace CalendarDataServer
 {
     internal class Employee : IEmployee
     {
         private int id;
         private ObservableCollection<IAvailability> availabilities;
         private readonly object mutex = new object();
-        
 
         public Employee(int newId)
         {
             id = newId;
             availabilities = new ObservableCollection<IAvailability>();
-
-            BindingOperations.EnableCollectionSynchronization(availabilities, mutex);
         }
 
         public ObservableCollection<IAvailability> Availabilities()
@@ -39,7 +35,7 @@ namespace CalendarData
             lock (mutex)
             {
                 IAvailability availability = new Availability(startTime, endTime);
-                availabilities.Add(availability);
+                Availabilities().Add(availability);
             }
         }
 

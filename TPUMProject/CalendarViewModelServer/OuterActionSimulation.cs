@@ -3,7 +3,7 @@ using System.Threading;
 using Timer = System.Timers.Timer;
 using System.Timers;
 
-namespace CalendarLogic
+namespace CalendarLogicServer
 {
     internal class OuterActionSimulation
     {

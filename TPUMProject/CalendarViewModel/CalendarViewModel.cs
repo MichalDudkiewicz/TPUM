@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Collections.Specialized;
 using System.Linq;
 using System.Collections.Generic;
+using System.Windows.Data;
 
 namespace CalendarViewModel
 {
@@ -14,6 +15,7 @@ namespace CalendarViewModel
         private CalendarModel.ICalendarModel calendarModel;
         private DateTime currentAvailability;
         public event PropertyChangedEventHandler PropertyChanged;
+        private readonly object mutex = new object();
 
         private ObservableCollection<CalendarViewModel.IAvailability> _availabilites;
 
@@ -21,7 +23,10 @@ namespace CalendarViewModel
         {
             get
             {
-                return _availabilites;
+                lock (mutex)
+                {
+                    return _availabilites;
+                }
             }
         }
 
@@ -30,18 +35,22 @@ namespace CalendarViewModel
             ObservableCollection<CalendarModel.IAvailability> senderCollection = sender as ObservableCollection<CalendarModel.IAvailability>;
             var newAvailabilities = senderCollection.ToList();
             List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarModel.IAvailability, IAvailability>(Convert));
-            
-            if (e.Action == NotifyCollectionChangedAction.Add)
+
+            lock (mutex)
             {
-                foreach (var item in e.NewItems)
+                if (e.Action == NotifyCollectionChangedAction.Add)
                 {
-                    _availabilites.Add(Convert((CalendarModel.IAvailability)item));
+                    foreach (var item in e.NewItems)
+                    {
+                        _availabilites.Add(Convert((CalendarModel.IAvailability)item));
+                    }
+                }
+                else if (e.Action == NotifyCollectionChangedAction.Reset)
+                {
+                    _availabilites.Clear();
                 }
             }
-            else if (e.Action == NotifyCollectionChangedAction.Reset)
-            {
-                _availabilites.Clear();
-            }
+
         }
 
         public static IAvailability Convert(CalendarModel.IAvailability a)
@@ -58,7 +67,7 @@ namespace CalendarViewModel
 
             AddCommand = new Updater(o => AddButtonClick("Add"));
 
-
+            BindingOperations.EnableCollectionSynchronization(_availabilites, mutex);
         }
 
         public ViewModel(CalendarModel.ICalendarModel model)
@@ -70,7 +79,7 @@ namespace CalendarViewModel
 
             AddCommand = new Updater(o => AddButtonClick("Add"));
 
-
+            BindingOperations.EnableCollectionSynchronization(_availabilites, mutex);
         }
 
         private void AddButtonClick(object sender)
@@ -103,20 +112,24 @@ namespace CalendarViewModel
         {
             get { return calendarModel.getActiveEmployeeId(); }
             set {
-                Availabilities.Clear();
-                calendarModel.availabilities().CollectionChanged -= onAvailabilitesChange;
-                calendarModel.setActiveEmployeeId(value);
-
-
-                List<CalendarModel.IAvailability> newAvailabilities = calendarModel.availabilities().ToList();
-                List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarModel.IAvailability, IAvailability>(Convert));
-
-                foreach (var a in newLogicAvailabilities)
+                lock (mutex)
                 {
-                    _availabilites.Add(a);
-                }
+                    Availabilities.Clear();
+                    calendarModel.availabilities().CollectionChanged -= onAvailabilitesChange;
+                    calendarModel.setActiveEmployeeId(value);
 
-                calendarModel.availabilities().CollectionChanged += onAvailabilitesChange;
+
+                    List<CalendarModel.IAvailability> newAvailabilities = calendarModel.availabilities().ToList();
+                    List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarModel.IAvailability, IAvailability>(Convert));
+
+
+                    foreach (var a in newLogicAvailabilities)
+                    {
+                        _availabilites.Add(a);
+                    }
+
+                    calendarModel.availabilities().CollectionChanged += onAvailabilitesChange;
+                }
             }
         }
 

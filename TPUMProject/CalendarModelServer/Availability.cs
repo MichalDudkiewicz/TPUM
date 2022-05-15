@@ -1,32 +1,18 @@
 ﻿using System;
 
-namespace CalendarData
+namespace CalendarModelServer
 {
-    public class Availability : IAvailability
+    internal class Availability : IAvailability
     {
         public DateTime startTime { get; set; }
         public DateTime endTime { get; set; }
         public Guid id { get; set; }
 
-        public Availability(IAvailability availability)
+        public Availability(CalendarLogicServer.IAvailability availability)
         {
             startTime = availability.startTime();
             endTime = availability.endTime();
             id = availability.id();
-        }
-
-        public Availability()
-        {
-            startTime = DateTime.MinValue;
-            endTime = DateTime.MaxValue;
-            id = Guid.Empty;
-        }
-
-        public Availability(DateTime starttime, DateTime endtime)
-        {
-            id = Guid.NewGuid();
-            startTime = starttime;
-            endTime = endtime;
         }
 
         public bool Equals(Availability other)
@@ -53,6 +39,5 @@ namespace CalendarData
         {
             return id == other.id();
         }
-
     }
 }
