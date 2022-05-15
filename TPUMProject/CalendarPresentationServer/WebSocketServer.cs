@@ -76,7 +76,7 @@ namespace CalendarViewServer
             private WebSocket m_WebSocket = null;
             private IPEndPoint m_remoteEndPoint;
 
-            private void ServerMessageLoop(WebSocket ws)
+            private async Task ServerMessageLoop(WebSocket ws)
             {
                 byte[] buffer = new byte[1024];
                 while (true)
@@ -86,8 +86,8 @@ namespace CalendarViewServer
                     if (_receiveResult.MessageType == WebSocketMessageType.Close)
                     {
                         onClose?.Invoke();
-                        ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "I am closing", CancellationToken.None);
-                        return;
+                        await ws.CloseAsync(WebSocketCloseStatus.NormalClosure, "I am closing", CancellationToken.None);
+                        break;
                     }
                     int count = _receiveResult.Count;
                     while (!_receiveResult.EndOfMessage)
@@ -95,8 +95,8 @@ namespace CalendarViewServer
                         if (count >= buffer.Length)
                         {
                             onClose?.Invoke();
-                            ws.CloseAsync(WebSocketCloseStatus.InvalidPayloadData, "That's too long", CancellationToken.None);
-                            return;
+                            await ws.CloseAsync(WebSocketCloseStatus.InvalidPayloadData, "That's too long", CancellationToken.None);
+                            break;
                         }
                         _segments = new ArraySegment<byte>(buffer, count, buffer.Length - count);
                         _receiveResult = ws.ReceiveAsync(_segments, CancellationToken.None).Result;

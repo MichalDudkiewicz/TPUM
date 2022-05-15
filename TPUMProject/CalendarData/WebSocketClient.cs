@@ -71,7 +71,7 @@ namespace CalendarData
             private Uri m_Peer = null;
             private readonly Action<string> m_Log;
 
-            private void ClientMessageLoop()
+            private async Task ClientMessageLoop()
             {
                 try
                 {
@@ -83,8 +83,8 @@ namespace CalendarData
                         if (result.MessageType == WebSocketMessageType.Close)
                         {
                             onClose?.Invoke();
-                            m_ClientWebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "I am closing", CancellationToken.None).Wait();
-                            return;
+                            await m_ClientWebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "I am closing", CancellationToken.None);
+                            break;
                         }
                         int count = result.Count;
                         while (!result.EndOfMessage)
@@ -92,8 +92,8 @@ namespace CalendarData
                             if (count >= buffer.Length)
                             {
                                 onClose?.Invoke();
-                                m_ClientWebSocket.CloseAsync(WebSocketCloseStatus.InvalidPayloadData, "That's too long", CancellationToken.None).Wait();
-                                return;
+                                await m_ClientWebSocket.CloseAsync(WebSocketCloseStatus.InvalidPayloadData, "That's too long", CancellationToken.None);
+                                break;
                             }
                             segment = new ArraySegment<byte>(buffer, count, buffer.Length - count);
                             result = m_ClientWebSocket.ReceiveAsync(segment, CancellationToken.None).Result;

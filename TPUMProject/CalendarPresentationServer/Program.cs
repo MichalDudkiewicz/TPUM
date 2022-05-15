@@ -1,10 +1,16 @@
 ﻿using System;
-using System.Collections.Specialized;
 using System.Threading.Tasks;
 using CalendarViewModelServer;
 
+#if (DEBUG)
+using System.Runtime.CompilerServices;
+
+[assembly:InternalsVisibleTo("CalendarLogic.Test")]
+#endif
+
 namespace CalendarViewServer
 {
+
     internal class Program
     {
         static WebSocketConnection _wserver = null;
