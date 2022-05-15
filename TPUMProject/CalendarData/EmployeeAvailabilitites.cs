@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace CalendarData
 {
     [Serializable()]
-    public class EmployeeAvailabilitites : ISerializable
+    internal class EmployeeAvailabilitites : ISerializable
     {
         public int Id { get; set; }
         public List<Availability> Availabilitites { get; set; }

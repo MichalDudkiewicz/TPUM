@@ -11,7 +11,7 @@ namespace CalendarViewServer
         static async Task Main(string[] args)
         {
             Uri uri = new Uri("ws://localhost:6966");
-            ICalendarViewModel calendarViewModel = new ViewModel();
+            ICalendarViewModel dataContext = new ViewModel();
             Task server = Task.Run(async () => await WebSocketServer.Server(uri.Port,
                 _ws =>
                 {
@@ -21,11 +21,11 @@ namespace CalendarViewServer
                         Console.WriteLine("[RECEIVED]:");
                         Console.WriteLine(data.ToString());
                         Console.WriteLine("------------");
-                        calendarViewModel.receiveData(data);
+                        dataContext.receiveData(data);
                     };
                 }));
 
-            calendarViewModel.SendData += updateClientAvailabilities;
+            dataContext.SendData += updateClientAvailabilities;
 
             Console.ReadKey();
         }
