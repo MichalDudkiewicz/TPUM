@@ -14,11 +14,9 @@ namespace CalendarLogic
     public class EmployeeAvailabilityManager : IEmployeeAvailabilityManager
     {
         private ObservableCollection<IAvailability> availabilities;
-        private IEmployee _owningEmployee;
-        private int activeEmployeeId = 0;
+        private IEmployeeDataManager _owningEmployeeManager;
 
         private readonly object _dataLock = new object();
-        WebSocketConnection _wclient = null;
 
         public ObservableCollection<IAvailability> getAvailabilities()
         {
@@ -32,10 +30,10 @@ namespace CalendarLogic
         {
             lock (_dataLock)
             {
-                _owningEmployee.Availabilities().CollectionChanged += onAvailabilitesChange;
-                var newAvailabilities = _owningEmployee.Availabilities().ToList();
+                var newAvailabilities = _owningEmployeeManager.Availabilities().ToList();
                 List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.IAvailability, IAvailability>(Convert));
                 availabilities = new ObservableCollection<IAvailability>(newLogicAvailabilities);
+                _owningEmployeeManager.Availabilities().CollectionChanged += onAvailabilitesChange;
             }
         }
 
@@ -43,7 +41,7 @@ namespace CalendarLogic
         {
             lock (_dataLock)
             {
-                return activeEmployeeId;
+                return _owningEmployeeManager.ActiveEmployeeId();
             }
         }
 
@@ -54,9 +52,6 @@ namespace CalendarLogic
 
         private void onAvailabilitesChange(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var newAvailabilities = _owningEmployee.Availabilities().ToList();
-            List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.IAvailability, IAvailability>(Convert));
-
             lock (_dataLock)
             {
                 if (e.Action == NotifyCollectionChangedAction.Add)
@@ -80,31 +75,15 @@ namespace CalendarLogic
             }
         }
 
-        public EmployeeAvailabilityManager(IEmployee owningEmployee)
-        {
-            _owningEmployee = owningEmployee;
-            //availabilities = new ObservableCollection<IAvailability>();
-            //_owningEmployee.Availabilities().CollectionChanged += onAvailabilitesChange;
-            activeEmployeeId = _owningEmployee.GetId();
-            _owningEmployee.Availabilities().CollectionChanged += onAvailabilitesChange;
-            var newAvailabilities = _owningEmployee.Availabilities().ToList();
-            List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.IAvailability, IAvailability>(Convert));
-            availabilities = new ObservableCollection<IAvailability>(newLogicAvailabilities);
-
-            BindingOperations.EnableCollectionSynchronization(availabilities, _dataLock);
-        }
-
         public EmployeeAvailabilityManager(int owningEmployeeId)
         {
-            EmployeeMaker maker = new EmployeeMaker();
-            _owningEmployee = maker.CreateEmployee(owningEmployeeId);
-            //availabilities = new ObservableCollection<IAvailability>();
-            //_owningEmployee.Availabilities().CollectionChanged += onAvailabilitesChange;
-            activeEmployeeId = _owningEmployee.GetId();
-            _owningEmployee.Availabilities().CollectionChanged += onAvailabilitesChange;
-            var newAvailabilities = _owningEmployee.Availabilities().ToList();
+            _owningEmployeeManager = new EmployeeDataManager(owningEmployeeId);
+            _owningEmployeeManager.connect();
+           
+            var newAvailabilities = _owningEmployeeManager.Availabilities().ToList();
             List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.IAvailability, IAvailability>(Convert));
             availabilities = new ObservableCollection<IAvailability>(newLogicAvailabilities);
+            _owningEmployeeManager.Availabilities().CollectionChanged += onAvailabilitesChange;
 
             BindingOperations.EnableCollectionSynchronization(availabilities, _dataLock);
         }
@@ -113,15 +92,7 @@ namespace CalendarLogic
         {
             lock (_dataLock)
             {
-                EmployeeAvailabilitites ea = new EmployeeAvailabilitites(activeEmployeeId);
-                ea.AddAvailabilityToList(id,startTime,endTime);
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(EmployeeAvailabilitites));
-                using (StringWriter textWriter = new StringWriter())
-                {
-                    xmlSerializer.Serialize(textWriter, ea);
-                    string m = textWriter.ToString();
-                    send(m);
-                }
+                _owningEmployeeManager.AddAvailability(id, startTime, endTime);
             }
         }
 
@@ -129,41 +100,8 @@ namespace CalendarLogic
         {
             lock (_dataLock)
             {
-                _owningEmployee.removeAvailability(id);
+                _owningEmployeeManager.removeAvailability(id);
             }
-        }
-
-        private void parseAndStore(string message)
-        {
-            XmlSerializer deserializer = new XmlSerializer(typeof(EmployeeAvailabilitites));
-            StringReader reader = new StringReader(message);
-            EmployeeAvailabilitites ea = (EmployeeAvailabilitites)deserializer.Deserialize(reader);
-            reader.Close();
-            foreach (CalendarData.IAvailability a in ea.Availabilitites)
-            {
-                _owningEmployee.addAvailability(a);
-            }
-        }
-
-        private async void send(string message)
-        {
-            await _wclient.SendAsync(message);
-        }
-
-        public async Task connect()
-        {
-            Uri uri = new Uri("ws://localhost:6966");
-            _wclient = await WebSocketClient.Connect(uri, message => Console.WriteLine(message));
-
-            _wclient.onMessage = (data) =>
-            {
-                parseAndStore($"{data}");
-            };
-        }
-
-        public async Task disconnect()
-        {
-            
         }
     }
 }

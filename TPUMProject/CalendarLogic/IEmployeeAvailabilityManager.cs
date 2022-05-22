@@ -15,9 +15,5 @@ namespace CalendarLogic
         public void removeAvailability(Guid id);
 
         public ObservableCollection<IAvailability> getAvailabilities();
-
-        public abstract Task connect();
-
-        public abstract Task disconnect();
     }
 }

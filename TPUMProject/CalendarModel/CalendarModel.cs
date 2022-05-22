@@ -52,8 +52,6 @@ namespace CalendarModel
         public CalendarModel(int employeeId)
         {
             _employeeAvailabilityManager = new EmployeeAvailabilityManager(employeeId);
-
-            _employeeAvailabilityManager.connect();
             
             _availabilites = new ObservableCollection<IAvailability>();
             _employeeAvailabilityManager.getAvailabilities().CollectionChanged += onAvailabilitesChange;

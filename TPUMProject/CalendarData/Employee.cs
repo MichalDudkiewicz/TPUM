@@ -68,13 +68,4 @@ namespace CalendarData
             this.id = id;
         }
     }
-
-    public class EmployeeMaker
-    {
-        public IEmployee CreateEmployee(int id)
-        {
-            IEmployee newEmployee = new Employee(id);
-            return newEmployee;
-        }
-    }
 }
