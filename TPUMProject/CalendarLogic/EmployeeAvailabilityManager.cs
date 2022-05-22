@@ -30,6 +30,7 @@ namespace CalendarLogic
         {
             lock (_dataLock)
             {
+                _owningEmployeeManager.Availabilities().CollectionChanged -= onAvailabilitesChange;
                 var newAvailabilities = _owningEmployeeManager.Availabilities().ToList();
                 List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.IAvailability, IAvailability>(Convert));
                 availabilities = new ObservableCollection<IAvailability>(newLogicAvailabilities);

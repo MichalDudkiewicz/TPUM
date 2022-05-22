@@ -15,13 +15,6 @@ namespace CalendarLogic.Test
 
         static CalendarViewServer.WebSocketConnection _wserver = null;
 
-        private Task val = null;
-
-        private async Task LongRunningMethod()
-        {
-            await employeeAvailabilityManager.connect();
-        }
-
         private async static void updateClientAvailabilities(object sender, string e)
         {
             if (_wserver != null)
@@ -37,8 +30,7 @@ namespace CalendarLogic.Test
         [TestInitialize]
         public void TestInitialize()
         {
-            Employee currentEmployee = new Employee(0);
-            employeeAvailabilityManager = new EmployeeAvailabilityManager(currentEmployee);
+            employeeAvailabilityManager = new EmployeeAvailabilityManager(0);
 
             Uri uri = new Uri("ws://localhost:6966");
             ICalendarViewModel dataContext = new ViewModel();
@@ -57,7 +49,6 @@ namespace CalendarLogic.Test
 
             dataContext.SendData += updateClientAvailabilities;
 
-            val = LongRunningMethod();
         }
 
         [TestMethod]
