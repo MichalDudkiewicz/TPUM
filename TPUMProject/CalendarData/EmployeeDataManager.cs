@@ -33,12 +33,18 @@ namespace CalendarData
 
         public ObservableCollection<IAvailability> Availabilities()
         {
-            return availabilities;
+            lock (_dataLock)
+            {
+                return availabilities;
+            }
         }
 
         int ActiveEmployeeId()
         {
-            return activeEmployeeId;
+            lock (_dataLock)
+            {
+                return activeEmployeeId;
+            }
         }
 
         private void onCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
@@ -91,7 +97,10 @@ namespace CalendarData
             reader.Close();
             foreach (CalendarData.IAvailability a in ea.Availabilitites)
             {
-                _owningEmployee.addAvailability(a);
+                lock(_dataLock)
+                {
+                    _owningEmployee.addAvailability(a);
+                }
             }
         }
 
@@ -126,7 +135,10 @@ namespace CalendarData
 
         int IEmployeeDataManager.ActiveEmployeeId()
         {
-            return activeEmployeeId;
+            lock (_dataLock)
+            {
+                return activeEmployeeId;
+            }
         }
     }
 }
