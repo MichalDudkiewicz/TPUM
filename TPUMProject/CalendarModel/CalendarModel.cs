@@ -49,9 +49,12 @@ namespace CalendarModel
             BindingOperations.EnableCollectionSynchronization(_availabilites, mutex);
         }
 
-        public CalendarModel()
+        public CalendarModel(int employeeId)
         {
-            _employeeAvailabilityManager = new EmployeeAvailabilityManager();
+            _employeeAvailabilityManager = new EmployeeAvailabilityManager(employeeId);
+
+            _employeeAvailabilityManager.connect();
+            
             _availabilites = new ObservableCollection<IAvailability>();
             _employeeAvailabilityManager.getAvailabilities().CollectionChanged += onAvailabilitesChange;
 
@@ -81,9 +84,9 @@ namespace CalendarModel
             }
         }
 
-        public void AddActiveEmployeeAvailability(DateTime startTime, DateTime endTime)
+        public void AddActiveEmployeeAvailability(Guid id, DateTime startTime, DateTime endTime)
         {
-            _employeeAvailabilityManager.addAvailability(startTime, endTime);
+            _employeeAvailabilityManager.AddAvailability(id, startTime, endTime);
         }
 
         public void RemoveActiveEmployeeAvailability(Guid id)

@@ -60,12 +60,14 @@ namespace CalendarViewModel
 
         public ViewModel()
         {
-            calendarModel = new CalendarModel.CalendarModel();
+            AddCommand = new Updater(o => AddButtonClick("Add"));
+
+
+
+            calendarModel = new CalendarModel.CalendarModel(0);
 
             _availabilites = new ObservableCollection<IAvailability>();
             ActiveEmployeeId = 0;
-
-            AddCommand = new Updater(o => AddButtonClick("Add"));
 
             BindingOperations.EnableCollectionSynchronization(_availabilites, mutex);
         }
@@ -84,7 +86,7 @@ namespace CalendarViewModel
 
         private void AddButtonClick(object sender)
         {
-            calendarModel.AddActiveEmployeeAvailability(currentAvailability, currentAvailability);
+            calendarModel.AddActiveEmployeeAvailability(Guid.NewGuid(),currentAvailability, currentAvailability);
             //calendarModel._employeeAvailabilityManager.ActiveEmployeeId = ActiveEmployeeId;
             //calendarModel._employeeAvailabilityManager.addAvailability(currentAvailability, currentAvailability);
         }

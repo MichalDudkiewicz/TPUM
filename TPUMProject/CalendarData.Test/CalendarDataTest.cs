@@ -6,52 +6,41 @@ namespace CalendarData.Test
     [TestClass]
     public class CalendarDataTest
     {
-        private IRepository<IEmployee> employeeRepository;
+        public IEmployee employee;
 
         [TestInitialize]
         public void TestInit()
         {
             List<IEmployee> employees = new List<IEmployee>();
 
-            IEmployee employee = new Employee(0);
+            employee = new Employee(0);
             employees.Add(employee);
-
-            IEmployee employee2 = new Employee(1);
-            employees.Add(employee2);
-
-            employeeRepository = new EmployeeRepository(employees);
-
         }
 
         [TestMethod]
         public void AddAvailability_Test()
         {
-            employeeRepository.GetById(0).addAvailability(System.DateTime.Today, System.DateTime.Today.AddDays(2));
-            employeeRepository.GetById(0).addAvailability(System.DateTime.Today.AddDays(5), System.DateTime.Today.AddDays(8));
+            employee.addAvailability(System.DateTime.Today, System.DateTime.Today.AddDays(2));
+            employee.addAvailability(System.DateTime.Today.AddDays(5), System.DateTime.Today.AddDays(8));
 
-            employeeRepository.GetById(1).addAvailability(System.DateTime.Today, System.DateTime.Today.AddDays(2));
-
-            bool isFirstFilled = employeeRepository.GetById(0).Availabilities().Count == 2;
-            Assert.IsTrue(isFirstFilled);
-
-            bool isSecondFilled = employeeRepository.GetById(1).Availabilities().Count == 1;
-            Assert.IsTrue(isSecondFilled);
+            bool isFilled = employee.Availabilities().Count == 2;
+            Assert.IsTrue(isFilled);
         }
 
         [TestMethod]
         public void RemoveAvailability_Test()
         {
-            employeeRepository.GetById(0).addAvailability(System.DateTime.Today, System.DateTime.Today.AddDays(2));
-            employeeRepository.GetById(0).addAvailability(System.DateTime.Today.AddDays(5), System.DateTime.Today.AddDays(8));
+            employee.addAvailability(System.DateTime.Today, System.DateTime.Today.AddDays(2));
+            employee.addAvailability(System.DateTime.Today.AddDays(5), System.DateTime.Today.AddDays(8));
 
-            bool dateCheck = employeeRepository.GetById(0).Availabilities()[0].startTime() == System.DateTime.Today;
+            bool dateCheck = employee.Availabilities()[0].startTime() == System.DateTime.Today;
             Assert.IsTrue(dateCheck);
 
-            System.Guid availabilityId = employeeRepository.GetById(0).Availabilities()[0].id();
+            System.Guid availabilityId = employee.Availabilities()[0].id();
 
-            employeeRepository.GetById(0).removeAvailability(availabilityId);
+            employee.removeAvailability(availabilityId);
 
-            bool isAvailabilityRemoved = employeeRepository.GetById(0).Availabilities().Count == 1;
+            bool isAvailabilityRemoved = employee.Availabilities().Count == 1;
             Assert.IsTrue(isAvailabilityRemoved);
         }
 

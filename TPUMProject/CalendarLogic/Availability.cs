@@ -1,5 +1,11 @@
 ﻿using System;
 
+#if (DEBUG)
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("CalendarLogic.Test")]
+#endif
+
 namespace CalendarLogic
 {
     internal class Availability : IAvailability

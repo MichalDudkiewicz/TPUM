@@ -11,7 +11,7 @@ namespace CalendarModel
 
         public int getActiveEmployeeId();
 
-        public void AddActiveEmployeeAvailability(DateTime startTime, DateTime endTime);
+        public void AddActiveEmployeeAvailability(Guid id, DateTime startTime, DateTime endTime);
 
         public void RemoveActiveEmployeeAvailability(Guid id);
     }

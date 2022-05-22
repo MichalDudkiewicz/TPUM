@@ -11,14 +11,15 @@ namespace CalendarLogic.Test
     [TestClass]
     public class CalendarLogicIntergrationTest
     {
+        IEmployeeAvailabilityManager employeeAvailabilityManager;
+
         static CalendarViewServer.WebSocketConnection _wserver = null;
 
-        private IRepository<IEmployee> mRepository;
         private Task val = null;
 
         private async Task LongRunningMethod()
         {
-            await mRepository.connect();
+            await employeeAvailabilityManager.connect();
         }
 
         private async static void updateClientAvailabilities(object sender, string e)
@@ -36,6 +37,9 @@ namespace CalendarLogic.Test
         [TestInitialize]
         public void TestInitialize()
         {
+            Employee currentEmployee = new Employee(0);
+            employeeAvailabilityManager = new EmployeeAvailabilityManager(currentEmployee);
+
             Uri uri = new Uri("ws://localhost:6966");
             ICalendarViewModel dataContext = new ViewModel();
             Task server = Task.Run(async () => await WebSocketServer.Server(uri.Port,
@@ -53,27 +57,20 @@ namespace CalendarLogic.Test
 
             dataContext.SendData += updateClientAvailabilities;
 
-            List<IEmployee> employees = new List<IEmployee>();
-
-            IEmployee employee = new Employee(0);
-            employees.Add(employee);
-
-            IEmployee employee2 = new Employee(1);
-            employees.Add(employee2);
-
-            mRepository = new EmployeeRepository(employees);
-
             val = LongRunningMethod();
         }
 
         [TestMethod]
         public async Task AddAvailability_ExpectedAvailabilityAdded()
         {
-            IEmployeeAvailabilityManager employeeAvailabilityManager = new EmployeeAvailabilityManager(mRepository);
             DateTime date = new DateTime(2022, 5, 11);
             var availabilitites = employeeAvailabilityManager.getAvailabilities();
             Assert.AreEqual(availabilitites.Count, 0);
-            employeeAvailabilityManager.addAvailability(date, date);
+
+            CalendarData.IAvailability newAvailability = new CalendarData.Availability(date, date);
+            IAvailability availability = new Availability(newAvailability);
+
+            employeeAvailabilityManager.AddAvailability(availability.id(),availability.startTime(),availability.endTime());
 
             await Task.Delay(1000);
 
@@ -94,21 +91,32 @@ namespace CalendarLogic.Test
         [TestMethod]
         public async Task RemoveAvailability_ExpectedAvailabilityRemove()
         {
-            IEmployeeAvailabilityManager employeeAvailabilityManager = new EmployeeAvailabilityManager(mRepository);
             DateTime date = new DateTime(2022, 5, 11);
-            employeeAvailabilityManager.addAvailability(date, date);
+
+            CalendarData.IAvailability newAvailability = new CalendarData.Availability(date, date);
+            IAvailability availability = new Availability(newAvailability);
+
+            employeeAvailabilityManager.AddAvailability(availability.id(), availability.startTime(), availability.endTime());
 
             await Task.Delay(1000);
 
             var availabilitites = employeeAvailabilityManager.getAvailabilities();
             Assert.AreEqual(availabilitites.Count, 1);
 
-            employeeAvailabilityManager.removeAvailability(availabilitites[0].id());
+            employeeAvailabilityManager.removeAvailability(availability.id());
 
             await Task.Delay(1000);
 
-            availabilitites = employeeAvailabilityManager.getAvailabilities();
-            Assert.AreEqual(0, availabilitites.Count);
+            bool contains = false;
+            foreach (var avail in availabilitites)
+            {
+                if (avail.startTime() == date && avail.endTime() == date && avail.id() == availability.id())
+                {
+                    contains = true;
+                    break;
+                }
+            }
+            Assert.IsFalse(contains);
 
             await _wserver?.DisconnectAsync();
         }

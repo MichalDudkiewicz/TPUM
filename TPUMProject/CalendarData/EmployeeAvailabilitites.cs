@@ -16,10 +16,20 @@ namespace CalendarData
             Availabilitites = new List<Availability>();
         }
 
-        public EmployeeAvailabilitites(int id, List<Availability> availabilitites)
+        public EmployeeAvailabilitites(int id)
         {
             Id = id;
-            Availabilitites = availabilitites;
+            Availabilitites = new List<Availability>();
+            //Availabilitites = availabilitites;
+        }
+
+        public void AddAvailabilityToList(Guid id, DateTime startTime, DateTime endTime)
+        {
+            Availability availability = new Availability();
+            availability.id = id;
+            availability.startTime = startTime;
+            availability.endTime = endTime;
+            Availabilitites.Add(availability);
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace CalendarLogic
 {
@@ -9,10 +10,14 @@ namespace CalendarLogic
 
         public int getActiveEmployeeId();
 
-        public void addAvailability(DateTime startTime, DateTime endTime);
+        public void AddAvailability(Guid id, DateTime startTime, DateTime endTime);
 
         public void removeAvailability(Guid id);
 
         public ObservableCollection<IAvailability> getAvailabilities();
+
+        public abstract Task connect();
+
+        public abstract Task disconnect();
     }
 }

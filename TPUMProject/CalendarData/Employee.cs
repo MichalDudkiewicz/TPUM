@@ -42,6 +42,13 @@ namespace CalendarData
                 availabilities.Add(availability);
             }
         }
+        public void addAvailability(IAvailability availability)
+        {
+            lock (mutex)
+            {
+                availabilities.Add(availability);
+            }
+        }
 
         public void removeAvailability(Guid id)
         {
@@ -54,6 +61,20 @@ namespace CalendarData
         public int GetId()
         {
             return id;
+        }
+
+        public void SetId(int id)
+        {
+            this.id = id;
+        }
+    }
+
+    public class EmployeeMaker
+    {
+        public IEmployee CreateEmployee(int id)
+        {
+            IEmployee newEmployee = new Employee(id);
+            return newEmployee;
         }
     }
 }

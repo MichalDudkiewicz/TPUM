@@ -10,6 +10,8 @@ namespace CalendarViewModelServer
         public int Id { get; set; }
         public List<Availability> Availabilitites { get; set; }
 
+        public bool isAdded;
+
         public EmployeeAvailabilitites()
         {
             Id = 0;
@@ -26,6 +28,7 @@ namespace CalendarViewModelServer
         {
             info.AddValue("id", Id);
             info.AddValue("availabilitites", Availabilitites);
+            info.AddValue("isAdded", isAdded);
         }
 
         public EmployeeAvailabilitites(SerializationInfo info, StreamingContext context)

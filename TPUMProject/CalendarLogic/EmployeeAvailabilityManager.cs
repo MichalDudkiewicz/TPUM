@@ -2,18 +2,23 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Data;
+using System.Xml.Serialization;
 using CalendarData;
 
 namespace CalendarLogic
 {
     public class EmployeeAvailabilityManager : IEmployeeAvailabilityManager
     {
-        public IRepository<IEmployee> _employeeRepository;
         private ObservableCollection<IAvailability> availabilities;
+        private IEmployee _owningEmployee;
         private int activeEmployeeId = 0;
+
         private readonly object _dataLock = new object();
+        WebSocketConnection _wclient = null;
 
         public ObservableCollection<IAvailability> getAvailabilities()
         {
@@ -27,10 +32,8 @@ namespace CalendarLogic
         {
             lock (_dataLock)
             {
-                _employeeRepository.GetById(activeEmployeeId).Availabilities().CollectionChanged -= onAvailabilitesChange;
-                this.activeEmployeeId = activeEmployeeId;
-                _employeeRepository.GetById(activeEmployeeId).Availabilities().CollectionChanged += onAvailabilitesChange;
-                var newAvailabilities = _employeeRepository.GetById(activeEmployeeId).Availabilities().ToList();
+                _owningEmployee.Availabilities().CollectionChanged += onAvailabilitesChange;
+                var newAvailabilities = _owningEmployee.Availabilities().ToList();
                 List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.IAvailability, IAvailability>(Convert));
                 availabilities = new ObservableCollection<IAvailability>(newLogicAvailabilities);
             }
@@ -51,7 +54,7 @@ namespace CalendarLogic
 
         private void onAvailabilitesChange(object sender, NotifyCollectionChangedEventArgs e)
         {
-            var newAvailabilities = _employeeRepository.GetById(activeEmployeeId).Availabilities().ToList();
+            var newAvailabilities = _owningEmployee.Availabilities().ToList();
             List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.IAvailability, IAvailability>(Convert));
 
             lock (_dataLock)
@@ -77,30 +80,48 @@ namespace CalendarLogic
             }
         }
 
-        public EmployeeAvailabilityManager(IRepository<IEmployee> employeeRepository)
+        public EmployeeAvailabilityManager(IEmployee owningEmployee)
         {
-            _employeeRepository = employeeRepository;
-            availabilities = new ObservableCollection<IAvailability>();
-            _employeeRepository.GetById(activeEmployeeId).Availabilities().CollectionChanged += onAvailabilitesChange;
+            _owningEmployee = owningEmployee;
+            //availabilities = new ObservableCollection<IAvailability>();
+            //_owningEmployee.Availabilities().CollectionChanged += onAvailabilitesChange;
+            activeEmployeeId = _owningEmployee.GetId();
+            _owningEmployee.Availabilities().CollectionChanged += onAvailabilitesChange;
+            var newAvailabilities = _owningEmployee.Availabilities().ToList();
+            List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.IAvailability, IAvailability>(Convert));
+            availabilities = new ObservableCollection<IAvailability>(newLogicAvailabilities);
 
             BindingOperations.EnableCollectionSynchronization(availabilities, _dataLock);
         }
 
-        public EmployeeAvailabilityManager()
+        public EmployeeAvailabilityManager(int owningEmployeeId)
         {
-            _employeeRepository = new EmployeeRepository();
-            _employeeRepository.defaultInitialize();
-            availabilities = new ObservableCollection<IAvailability>();
-            _employeeRepository.GetById(activeEmployeeId).Availabilities().CollectionChanged += onAvailabilitesChange;
+            EmployeeMaker maker = new EmployeeMaker();
+            _owningEmployee = maker.CreateEmployee(owningEmployeeId);
+            //availabilities = new ObservableCollection<IAvailability>();
+            //_owningEmployee.Availabilities().CollectionChanged += onAvailabilitesChange;
+            activeEmployeeId = _owningEmployee.GetId();
+            _owningEmployee.Availabilities().CollectionChanged += onAvailabilitesChange;
+            var newAvailabilities = _owningEmployee.Availabilities().ToList();
+            List<IAvailability> newLogicAvailabilities = newAvailabilities.ConvertAll(new Converter<CalendarData.IAvailability, IAvailability>(Convert));
+            availabilities = new ObservableCollection<IAvailability>(newLogicAvailabilities);
 
             BindingOperations.EnableCollectionSynchronization(availabilities, _dataLock);
         }
 
-        public void addAvailability(DateTime startTime, DateTime endTime)
+        public void AddAvailability(Guid id, DateTime startTime, DateTime endTime)
         {
             lock (_dataLock)
             {
-                _employeeRepository.AddAvailability(activeEmployeeId,startTime, endTime);
+                EmployeeAvailabilitites ea = new EmployeeAvailabilitites(activeEmployeeId);
+                ea.AddAvailabilityToList(id,startTime,endTime);
+                XmlSerializer xmlSerializer = new XmlSerializer(typeof(EmployeeAvailabilitites));
+                using (StringWriter textWriter = new StringWriter())
+                {
+                    xmlSerializer.Serialize(textWriter, ea);
+                    string m = textWriter.ToString();
+                    send(m);
+                }
             }
         }
 
@@ -108,8 +129,41 @@ namespace CalendarLogic
         {
             lock (_dataLock)
             {
-                _employeeRepository.GetById(activeEmployeeId).removeAvailability(id);
+                _owningEmployee.removeAvailability(id);
             }
+        }
+
+        private void parseAndStore(string message)
+        {
+            XmlSerializer deserializer = new XmlSerializer(typeof(EmployeeAvailabilitites));
+            StringReader reader = new StringReader(message);
+            EmployeeAvailabilitites ea = (EmployeeAvailabilitites)deserializer.Deserialize(reader);
+            reader.Close();
+            foreach (CalendarData.IAvailability a in ea.Availabilitites)
+            {
+                _owningEmployee.addAvailability(a);
+            }
+        }
+
+        private async void send(string message)
+        {
+            await _wclient.SendAsync(message);
+        }
+
+        public async Task connect()
+        {
+            Uri uri = new Uri("ws://localhost:6966");
+            _wclient = await WebSocketClient.Connect(uri, message => Console.WriteLine(message));
+
+            _wclient.onMessage = (data) =>
+            {
+                parseAndStore($"{data}");
+            };
+        }
+
+        public async Task disconnect()
+        {
+            
         }
     }
 }
