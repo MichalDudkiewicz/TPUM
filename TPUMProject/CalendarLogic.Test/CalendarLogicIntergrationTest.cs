@@ -96,14 +96,14 @@ namespace CalendarLogic.Test
 
             //employeeDataManager.AddAvailability(availability.id(), availability.startTime(), availability.endTime());
 
-            //await Task.Delay(1000);
+            await Task.Delay(1000);
 
             //var availabilitites = employeeDataManager.Availabilities();
             //Assert.AreEqual(availabilitites.Count, 1);
 
             //employeeDataManager.removeAvailability(availability.id());
 
-            //await Task.Delay(1000);
+            await Task.Delay(1000);
 
             //bool contains = false;
             //foreach (var avail in availabilitites)
