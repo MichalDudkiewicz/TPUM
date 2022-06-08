@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<q1:ModelDesign xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:CalendarData="http://mdkm.com/TPUM/TPUMProject/" xmlns:cas="http://cas.eu/UA/CommServer/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:uax="http://opcfoundation.org/UA/2008/02/Types.xsd" xmlns="http://opcfoundation.org/UA/" TargetNamespace="http://cas.eu/UA/CommServer/" xmlns:q1="http://opcfoundation.org/UA/ModelDesign.xsd">
+  <q1:Namespaces>
+    <q1:Namespace Name="cas" XmlPrefix="cas">http://cas.eu/UA/CommServer/</q1:Namespace>
+    <q1:Namespace Name="OpcUa" Prefix="Opc.Ua" XmlNamespace="http://opcfoundation.org/UA/2008/02/Types.xsd">http://opcfoundation.org/UA/</q1:Namespace>
+    <q1:Namespace Name="CalendarData" Prefix="CalendarData" XmlPrefix="CalendarData">http://mdkm.com/TPUM/TPUMProject/</q1:Namespace>
+  </q1:Namespaces>
+  <q1:DataType SymbolicName="CalendarData:Availability">
+    <q1:BrowseName>Availability</q1:BrowseName>
+    <q1:Children>
+      <q1:Variable SymbolicName="CalendarData:id" DataType="Guid" />
+      <q1:Variable SymbolicName="CalendarData:startTime" DataType="DateTime">
+        <q1:BrowseName>startTime</q1:BrowseName>
+      </q1:Variable>
+      <q1:Variable SymbolicName="CalendarData:endTime" DataType="DateTime">
+        <q1:BrowseName>endTime</q1:BrowseName>
+      </q1:Variable>
+    </q1:Children>
+  </q1:DataType>
+</q1:ModelDesign>

@@ -1,0 +1,14 @@
+NameNotSet30,1,Unspecified
+NameNotSet30_NameNotSet31,2,Unspecified
+Availability,3,DataType
+Availability_id,4,Variable
+Availability_startTime,5,Variable
+Availability_endTime,6,Variable
+cas_BinarySchema,7,Variable
+cas_BinarySchema_DataTypeVersion,8,Variable
+cas_BinarySchema_NamespaceUri,9,Variable
+cas_BinarySchema_Deprecated,10,Variable
+cas_XmlSchema,11,Variable
+cas_XmlSchema_DataTypeVersion,12,Variable
+cas_XmlSchema_NamespaceUri,13,Variable
+cas_XmlSchema_Deprecated,14,Variable

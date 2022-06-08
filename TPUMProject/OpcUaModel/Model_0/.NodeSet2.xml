@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UANodeSet xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://opcfoundation.org/UA/2011/03/UANodeSet.xsd">
+  <NamespaceUris>
+    <Uri>http://mdkm.com/TPUM/TPUMProject/</Uri>
+    <Uri>http://cas.eu/UA/CommServer/</Uri>
+  </NamespaceUris>
+  <Models>
+    <Model ModelUri="http://cas.eu/UA/CommServer/">
+      <RequiredModel ModelUri="http://opcfoundation.org/UA/" XmlSchemaUri="http://opcfoundation.org/UA/2008/02/Types.xsd" Version="1.04.10" PublicationDate="2021-09-15T00:00:00Z" />
+    </Model>
+  </Models>
+  <Aliases>
+    <Alias Alias="Boolean">i=1</Alias>
+    <Alias Alias="SByte">i=2</Alias>
+    <Alias Alias="Byte">i=3</Alias>
+    <Alias Alias="Int16">i=4</Alias>
+    <Alias Alias="UInt16">i=5</Alias>
+    <Alias Alias="Int32">i=6</Alias>
+    <Alias Alias="UInt32">i=7</Alias>
+    <Alias Alias="Int64">i=8</Alias>
+    <Alias Alias="UInt64">i=9</Alias>
+    <Alias Alias="Float">i=10</Alias>
+    <Alias Alias="Double">i=11</Alias>
+    <Alias Alias="DateTime">i=13</Alias>
+    <Alias Alias="String">i=12</Alias>
+    <Alias Alias="ByteString">i=15</Alias>
+    <Alias Alias="Guid">i=14</Alias>
+    <Alias Alias="XmlElement">i=16</Alias>
+    <Alias Alias="NodeId">i=17</Alias>
+    <Alias Alias="ExpandedNodeId">i=18</Alias>
+    <Alias Alias="QualifiedName">i=20</Alias>
+    <Alias Alias="LocalizedText">i=21</Alias>
+    <Alias Alias="StatusCode">i=19</Alias>
+    <Alias Alias="Structure">i=22</Alias>
+    <Alias Alias="Number">i=26</Alias>
+    <Alias Alias="Integer">i=27</Alias>
+    <Alias Alias="UInteger">i=28</Alias>
+    <Alias Alias="HasComponent">i=47</Alias>
+    <Alias Alias="HasProperty">i=46</Alias>
+    <Alias Alias="Organizes">i=35</Alias>
+    <Alias Alias="HasEventSource">i=36</Alias>
+    <Alias Alias="HasNotifier">i=48</Alias>
+    <Alias Alias="HasSubtype">i=45</Alias>
+    <Alias Alias="HasTypeDefinition">i=40</Alias>
+    <Alias Alias="HasModellingRule">i=37</Alias>
+    <Alias Alias="HasEncoding">i=38</Alias>
+    <Alias Alias="HasDescription">i=39</Alias>
+    <Alias Alias="HasCause">i=53</Alias>
+    <Alias Alias="ToState">i=52</Alias>
+    <Alias Alias="FromState">i=51</Alias>
+    <Alias Alias="HasEffect">i=54</Alias>
+    <Alias Alias="HasTrueSubState">i=9004</Alias>
+    <Alias Alias="HasFalseSubState">i=9005</Alias>
+    <Alias Alias="HasDictionaryEntry">i=17597</Alias>
+    <Alias Alias="HasCondition">i=9006</Alias>
+    <Alias Alias="HasGuard">i=15112</Alias>
+    <Alias Alias="HasAddIn">i=17604</Alias>
+    <Alias Alias="HasInterface">i=17603</Alias>
+  </Aliases>
+  <UADataType NodeId="ns=1;i=3" BrowseName="1:Availability">
+    <DisplayName>Availability</DisplayName>
+    <References>
+      <Reference ReferenceType="HasComponent">ns=1;i=4</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=5</Reference>
+      <Reference ReferenceType="HasComponent">ns=1;i=6</Reference>
+      <Reference ReferenceType="HasSubtype" IsForward="false">i=24</Reference>
+    </References>
+  </UADataType>
+  <UAVariable NodeId="ns=1;i=4" BrowseName="1:id" ParentNodeId="ns=1;i=3" DataType="Guid">
+    <DisplayName>id</DisplayName>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=3</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;i=5" BrowseName="1:startTime" ParentNodeId="ns=1;i=3" DataType="DateTime">
+    <DisplayName>startTime</DisplayName>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=3</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=1;i=6" BrowseName="1:endTime" ParentNodeId="ns=1;i=3" DataType="DateTime">
+    <DisplayName>endTime</DisplayName>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=63</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">ns=1;i=3</Reference>
+    </References>
+  </UAVariable>
+  <UAVariable NodeId="ns=2;i=7" BrowseName="2:" SymbolicName="cas_BinarySchema" ReleaseStatus="Deprecated" DataType="ByteString">
+    <DisplayName />
+    <References>
+      <Reference ReferenceType="HasProperty">ns=2;i=9</Reference>
+      <Reference ReferenceType="HasProperty">ns=2;i=10</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">i=93</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=72</Reference>
+    </References>
+    <Value>
+      <ByteString xmlns="http://opcfoundation.org/UA/2008/02/Types.xsd">PG9wYzpUeXBlRGljdGlvbmFyeQ0KICB4bWxuczpDYWxlbmRhckRhdGE9Imh0dHA6Ly9tZGttLmNv
+bS9UUFVNL1RQVU1Qcm9qZWN0LyINCiAgeG1sbnM6b3BjPSJodHRwOi8vb3BjZm91bmRhdGlvbi5v
+cmcvQmluYXJ5U2NoZW1hLyINCiAgeG1sbnM6eHNpPSJodHRwOi8vd3d3LnczLm9yZy8yMDAxL1hN
+TFNjaGVtYS1pbnN0YW5jZSINCiAgeG1sbnM6dWE9Imh0dHA6Ly9vcGNmb3VuZGF0aW9uLm9yZy9V
+QS8iDQogIHhtbG5zOnRucz0iaHR0cDovL2Nhcy5ldS9VQS9Db21tU2VydmVyLyINCiAgRGVmYXVs
+dEJ5dGVPcmRlcj0iTGl0dGxlRW5kaWFuIg0KICBUYXJnZXROYW1lc3BhY2U9Imh0dHA6Ly9jYXMu
+ZXUvVUEvQ29tbVNlcnZlci8iDQo+DQogIDxvcGM6SW1wb3J0IE5hbWVzcGFjZT0iaHR0cDovL29w
+Y2ZvdW5kYXRpb24ub3JnL1VBLyIgTG9jYXRpb249Ik9wYy5VYS5CaW5hcnlTY2hlbWEuYnNkIi8+
+DQogIDxvcGM6SW1wb3J0IE5hbWVzcGFjZT0iaHR0cDovL21ka20uY29tL1RQVU0vVFBVTVByb2pl
+Y3QvIiBMb2NhdGlvbj0iQ2FsZW5kYXJEYXRhLkJpbmFyeVNjaGVtYS5ic2QiLz4NCg0KICA8b3Bj
+Ok9wYXF1ZVR5cGUgTmFtZT0iQXZhaWxhYmlsaXR5Ij4NCiAgPC9vcGM6T3BhcXVlVHlwZT4NCg0K
+PC9vcGM6VHlwZURpY3Rpb25hcnk+</ByteString>
+    </Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=2;i=9" BrowseName="NamespaceUri" ReleaseStatus="Deprecated" ParentNodeId="ns=2;i=7" DataType="String">
+    <DisplayName>NamespaceUri</DisplayName>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=2;i=7</Reference>
+    </References>
+    <Value>
+      <String xmlns="http://opcfoundation.org/UA/2008/02/Types.xsd">http://cas.eu/UA/CommServer/</String>
+    </Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=2;i=10" BrowseName="Deprecated" ReleaseStatus="Deprecated" ParentNodeId="ns=2;i=7" DataType="Boolean">
+    <DisplayName>Deprecated</DisplayName>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=2;i=7</Reference>
+    </References>
+    <Value>
+      <Boolean xmlns="http://opcfoundation.org/UA/2008/02/Types.xsd">true</Boolean>
+    </Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=2;i=11" BrowseName="2:" SymbolicName="cas_XmlSchema" ReleaseStatus="Deprecated" DataType="ByteString">
+    <DisplayName />
+    <References>
+      <Reference ReferenceType="HasProperty">ns=2;i=13</Reference>
+      <Reference ReferenceType="HasProperty">ns=2;i=14</Reference>
+      <Reference ReferenceType="HasComponent" IsForward="false">i=92</Reference>
+      <Reference ReferenceType="HasTypeDefinition">i=72</Reference>
+    </References>
+    <Value>
+      <ByteString xmlns="http://opcfoundation.org/UA/2008/02/Types.xsd">PHhzOnNjaGVtYQ0KICB4bWxuczpDYWxlbmRhckRhdGE9Imh0dHA6Ly9tZGttLmNvbS9UUFVNL1RQ
+VU1Qcm9qZWN0LyINCiAgeG1sbnM6eHM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDEvWE1MU2NoZW1h
+Ig0KICB4bWxuczp1YT0iaHR0cDovL29wY2ZvdW5kYXRpb24ub3JnL1VBLzIwMDgvMDIvVHlwZXMu
+eHNkIg0KICB4bWxuczp0bnM9Imh0dHA6Ly9jYXMuZXUvVUEvQ29tbVNlcnZlci8iDQogIHRhcmdl
+dE5hbWVzcGFjZT0iaHR0cDovL2Nhcy5ldS9VQS9Db21tU2VydmVyLyINCiAgZWxlbWVudEZvcm1E
+ZWZhdWx0PSJxdWFsaWZpZWQiDQo+DQogIDx4czppbXBvcnQgbmFtZXNwYWNlPSJodHRwOi8vb3Bj
+Zm91bmRhdGlvbi5vcmcvVUEvMjAwOC8wMi9UeXBlcy54c2QiIC8+DQogIDx4czppbXBvcnQgbmFt
+ZXNwYWNlPSJodHRwOi8vbWRrbS5jb20vVFBVTS9UUFVNUHJvamVjdC8iIC8+DQoNCiAgPHhzOmVs
+ZW1lbnQgbmFtZT0iQXZhaWxhYmlsaXR5IiB0eXBlPSJ1YTpWYXJpYW50IiAvPg0KDQo8L3hzOnNj
+aGVtYT4=</ByteString>
+    </Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=2;i=13" BrowseName="NamespaceUri" ReleaseStatus="Deprecated" ParentNodeId="ns=2;i=11" DataType="String">
+    <DisplayName>NamespaceUri</DisplayName>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=2;i=11</Reference>
+    </References>
+    <Value>
+      <String xmlns="http://opcfoundation.org/UA/2008/02/Types.xsd">http://cas.eu/UA/CommServer/</String>
+    </Value>
+  </UAVariable>
+  <UAVariable NodeId="ns=2;i=14" BrowseName="Deprecated" ReleaseStatus="Deprecated" ParentNodeId="ns=2;i=11" DataType="Boolean">
+    <DisplayName>Deprecated</DisplayName>
+    <References>
+      <Reference ReferenceType="HasTypeDefinition">i=68</Reference>
+      <Reference ReferenceType="HasProperty" IsForward="false">ns=2;i=11</Reference>
+    </References>
+    <Value>
+      <Boolean xmlns="http://opcfoundation.org/UA/2008/02/Types.xsd">true</Boolean>
+    </Value>
+  </UAVariable>
+</UANodeSet>

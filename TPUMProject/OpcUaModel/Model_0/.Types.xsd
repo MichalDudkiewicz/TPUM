@@ -1,0 +1,14 @@
+<xs:schema
+  xmlns:CalendarData="http://mdkm.com/TPUM/TPUMProject/"
+  xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  xmlns:ua="http://opcfoundation.org/UA/2008/02/Types.xsd"
+  xmlns:tns="http://cas.eu/UA/CommServer/"
+  targetNamespace="http://cas.eu/UA/CommServer/"
+  elementFormDefault="qualified"
+>
+  <xs:import namespace="http://opcfoundation.org/UA/2008/02/Types.xsd" />
+  <xs:import namespace="http://mdkm.com/TPUM/TPUMProject/" />
+
+  <xs:element name="Availability" type="ua:Variant" />
+
+</xs:schema>

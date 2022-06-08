@@ -43,6 +43,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Implementation", "Implement
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{88935790-3D12-4203-A200-FA19545FD908}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OpcUaModel", "OpcUaModel\OpcUaModel.csproj", "{E517EA45-FA47-488D-9B1F-5E2C5829AF0F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -101,6 +103,10 @@ Global
 		{101ABE8C-BD2F-45EE-90EE-9A7A2F90F0E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{101ABE8C-BD2F-45EE-90EE-9A7A2F90F0E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{101ABE8C-BD2F-45EE-90EE-9A7A2F90F0E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E517EA45-FA47-488D-9B1F-5E2C5829AF0F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E517EA45-FA47-488D-9B1F-5E2C5829AF0F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E517EA45-FA47-488D-9B1F-5E2C5829AF0F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E517EA45-FA47-488D-9B1F-5E2C5829AF0F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
