@@ -14,6 +14,8 @@ namespace CalendarViewModelServer
         private CalendarModelServer.ICalendarModel calendarModel;
         public event EventHandler<string> SendData;
 
+        bool testBool = false;
+
         private ObservableCollection<CalendarViewModelServer.Availability> _availabilites;
 
         public ObservableCollection<CalendarViewModelServer.Availability> Availabilities
@@ -40,6 +42,10 @@ namespace CalendarViewModelServer
                     availabilitiesAdded.Add(av);
                 }
                 EmployeeAvailabilitites ea = new EmployeeAvailabilitites(ActiveEmployeeId, availabilitiesAdded);
+
+                testBool = !testBool;
+                ea.isAdded = testBool;
+
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(EmployeeAvailabilitites));
 
                 using (StringWriter textWriter = new StringWriter())

@@ -10,7 +10,7 @@ namespace CalendarViewModelServer
         public int Id { get; set; }
         public List<Availability> Availabilitites { get; set; }
 
-        public bool isAdded;
+        public bool isAdded = false;
 
         public EmployeeAvailabilitites()
         {

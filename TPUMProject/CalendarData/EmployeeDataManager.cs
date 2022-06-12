@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
@@ -17,14 +18,23 @@ namespace CalendarData
         WebSocketConnection _wclient = null;
         private ObservableCollection<IAvailability> availabilities;
 
+        InfoTracker tracker;
+        InfoReporter reporter;
+
+        public bool startedAdding = false;
+
+
         public EmployeeDataManager(int id)
         {
             activeEmployeeId = id;
             _owningEmployee = new Employee(id);
 
+            tracker = new InfoTracker();
+            reporter = new InfoReporter("BoolReporter");
+            reporter.Subscribe(tracker);
+
             var newAvailabilities = _owningEmployee.Availabilities().ToList();
             availabilities = new ObservableCollection<IAvailability>(newAvailabilities);
-
 
             _owningEmployee.Availabilities().CollectionChanged += onCollectionChanged;
 
@@ -94,12 +104,18 @@ namespace CalendarData
             XmlSerializer deserializer = new XmlSerializer(typeof(EmployeeAvailabilitites));
             StringReader reader = new StringReader(message);
             EmployeeAvailabilitites ea = (EmployeeAvailabilitites)deserializer.Deserialize(reader);
+
+            tracker.TrackBool(ea.isAdded);
+
             reader.Close();
-            foreach (CalendarData.IAvailability a in ea.Availabilitites)
+            if(reporter.receivedValue)
             {
-                lock(_dataLock)
+                foreach (CalendarData.IAvailability a in ea.Availabilitites)
                 {
-                    _owningEmployee.addAvailability(a);
+                    lock (_dataLock)
+                    {
+                        _owningEmployee.addAvailability(a);
+                    }
                 }
             }
         }
@@ -139,6 +155,105 @@ namespace CalendarData
             {
                 return activeEmployeeId;
             }
+        }
+    }
+
+    public class InfoTracker : IObservable<bool>
+    {
+        public InfoTracker()
+        {
+            observers = new List<IObserver<bool>>();
+        }
+
+        private List<IObserver<bool>> observers;
+
+        public IDisposable Subscribe(IObserver<bool> observer)
+        {
+            if (!observers.Contains(observer))
+                observers.Add(observer);
+            return new Unsubscriber(observers, observer);
+        }
+
+        private class Unsubscriber : IDisposable
+        {
+            private List<IObserver<bool>> _observers;
+            private IObserver<bool> _observer;
+
+            public Unsubscriber(List<IObserver<bool>> observers, IObserver<bool> observer)
+            {
+                this._observers = observers;
+                this._observer = observer;
+            }
+
+            public void Dispose()
+            {
+                if (_observer != null && _observers.Contains(_observer))
+                    _observers.Remove(_observer);
+            }
+        }
+
+        public void TrackBool(Nullable<bool> added)
+        {
+            foreach (var observer in observers)
+            {
+                if (!added.HasValue)
+                    observer.OnError(new ArgumentNullException());
+                else
+                    observer.OnNext(added.Value);
+            }
+        }
+
+        public void EndTransmission()
+        {
+            foreach (var observer in observers.ToArray())
+                if (observers.Contains(observer))
+                    observer.OnCompleted();
+
+            observers.Clear();
+        }
+    }
+
+    public class InfoReporter : IObserver<bool>
+    {
+        private IDisposable unsubscriber;
+        private string instName;
+
+        public bool receivedValue = false;
+
+        public InfoReporter(string name)
+        {
+            this.instName = name;
+        }
+
+        public string Name
+        { get { return this.instName; } }
+
+        public virtual void Subscribe(IObservable<bool> provider)
+        {
+            if (provider != null)
+                unsubscriber = provider.Subscribe(this);
+        }
+
+        public virtual void OnCompleted()
+        {
+            Console.WriteLine("Tracker has completed transmitting data to {0}.", this.Name);
+            this.Unsubscribe();
+        }
+
+        public virtual void OnError(Exception e)
+        {
+            Console.WriteLine("{0}: The result cannot be determined.", this.Name);
+        }
+
+        public virtual void OnNext(bool value)
+        {
+            Console.WriteLine("{0}: Received info", this.Name);
+            receivedValue = value;
+        }
+
+        public virtual void Unsubscribe()
+        {
+            unsubscriber.Dispose();
         }
     }
 }

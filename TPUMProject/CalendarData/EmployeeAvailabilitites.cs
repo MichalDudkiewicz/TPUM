@@ -10,6 +10,8 @@ namespace CalendarData
         public int Id { get; set; }
         public List<Availability> Availabilitites { get; set; }
 
+        public bool isAdded { get; set; }
+
         public EmployeeAvailabilitites()
         {
             Id = 0;

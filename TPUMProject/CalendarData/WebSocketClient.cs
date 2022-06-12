@@ -33,6 +33,7 @@ namespace CalendarData
 
         private class ClintWebSocketConnection : WebSocketConnection
         {
+
             public ClintWebSocketConnection(ClientWebSocket clientWebSocket, Uri peer, Action<string> log)
             {
                 m_ClientWebSocket = clientWebSocket;
